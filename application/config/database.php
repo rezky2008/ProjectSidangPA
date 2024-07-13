@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'sidangpa',
+	'hostname' => 'plesk.pcr.ac.id',
+	'username' => 'rezky@localhost',
+	'password' => 'Lemao321!',
+	'database' => 'rezky20ti_',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /ProjectSidangPA/
+    RewriteBase https://penjadwalanpa.pocari.id/
 
     # Remove index.php from URL
     RewriteCond %{REQUEST_FILENAME} !-f
