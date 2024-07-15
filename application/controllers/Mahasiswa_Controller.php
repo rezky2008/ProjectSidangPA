@@ -44,6 +44,8 @@ class Mahasiswa_Controller extends CI_Controller {
         $insert_data = array(
             'NIM' => $NIM,
             'nama' => $nama,
+            'prodi' => $prodi,
+            'email' => $email,
             'id_kelas' => $id_kelas
             // Add other necessary fields here
         );
@@ -71,6 +73,8 @@ class Mahasiswa_Controller extends CI_Controller {
         $update_data = array(
             'NIM' => $NIM,
             'nama' => $nama,
+            'prodi' => $prodi,
+            'email' => $email,
             'id_kelas' => $id_kelas,
         );
 

@@ -44,7 +44,9 @@ class Dosen_Controller extends CI_Controller {
         $insert_data = array(
             'id_dosen' => $id_dosen,
             'nama' => $nama,
-            'inisial' => $inisial
+            'inisial' => $inisial,
+            'kbk' => $kbk,
+            'email' => $email,
             // Add other necessary fields here
         );
         
@@ -73,6 +75,8 @@ class Dosen_Controller extends CI_Controller {
             'id_dosen' => $id_dosen,
             'nama' => $nama,
             'inisial' => $inisial,
+            'kbk' => $kbk,
+            'email' => $email,
             'jadwal' => $jadwal,
         );
 

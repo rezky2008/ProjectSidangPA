@@ -38,11 +38,9 @@ class Ruangan_Controller extends CI_Controller {
         }
 
         $id_ruangan = $data['id_ruangan'];
-        $tipe = $data['tipe'];
 
         $insert_data = array(
             'id_ruangan' => $id_ruangan,
-            'tipe' => $tipe
             // Add other necessary fields here
         );
         
@@ -63,12 +61,10 @@ class Ruangan_Controller extends CI_Controller {
         $data = json_decode(file_get_contents('php://input'), true);
 
         $id_ruangan = $data['id_ruangan'];
-        $tipe = $data['tipe'];
         $jadwal = $data['jadwal'];
 
         $update_data = array(
             'id_ruangan' => $id_ruangan,
-            'tipe' => $tipe,
             'jadwal' => $jadwal,
         );
 
