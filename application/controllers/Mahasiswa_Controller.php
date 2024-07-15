@@ -18,7 +18,7 @@ class Mahasiswa_Controller extends CI_Controller {
     }
 
     public function get_mahasiswa_by_id($id){
-        $response['data_mahasiswa'] = $this->Mahasiswa_model->get_by_id($id);
+        $response['data_mahasiswa'] = $this->Mahasiswa_model->get_by_nim($id);
         $response['message'] = 'success';
 
         $this->output
