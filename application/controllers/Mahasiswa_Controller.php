@@ -39,6 +39,8 @@ class Mahasiswa_Controller extends CI_Controller {
 
         $NIM = $data['NIM'];
         $nama = $data['nama'];
+        $prodi = $data['prodi'];
+        $email = $data['email'];
         $id_kelas = $data['id_kelas'];
 
         $insert_data = array(
@@ -68,6 +70,8 @@ class Mahasiswa_Controller extends CI_Controller {
 
         $NIM = $data['NIM'];
         $nama = $data['nama'];
+        $prodi = $data['prodi'];
+        $email = $data['email'];
         $id_kelas = $data['id_kelas'];
 
         $update_data = array(

@@ -71,6 +71,8 @@ class Dosen_Controller extends CI_Controller {
         $id_dosen = $data['id_dosen'];
         $nama = $data['nama'];
         $inisial = $data['inisial'];
+        $kbk = $data['kbk'];
+        $email = $data['email'];
         $jadwal = $data['jadwal'];
 
         $update_data = array(
