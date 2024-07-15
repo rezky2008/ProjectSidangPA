@@ -52,25 +52,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 
 $route['api/get_kelas_all'] = 'Kelas_Controller/get_kelas_all';
-$route['api/get_kelas_by_id/(:any)'] = 'Kelas_Controller/get_kelas_by_id/1';
+$route['api/get_kelas_by_id/(:any)'] = 'Kelas_Controller/get_kelas_by_id/$1';
 $route['api/add_kelas'] = 'Kelas_Controller/add_kelas';
 $route['api/update_kelas'] = 'Kelas_Controller/update_kelas';
 $route['api/delete_kelas/(:any)'] = 'Kelas_Controller/delete_kelas/$1';
 
 $route['api/get_dosen_all'] = 'Dosen_Controller/get_dosen_all';
-$route['api/get_dosen_by_id/(:any)'] = 'Dosen_Controller/get_dosen_by_id/1';
+$route['api/get_dosen_by_id/(:any)'] = 'Dosen_Controller/get_dosen_by_id/$1';
 $route['api/add_dosen'] = 'Dosen_Controller/add_dosen';
 $route['api/update_dosen'] = 'Dosen_Controller/update_dosen';
 $route['api/delete_dosen/(:any)'] = 'Dosen_Controller/delete_dosen/$1';
 
 $route['api/get_ruangan_all'] = 'Ruangan_Controller/get_ruangan_all';
-$route['api/get_ruangan_by_id/(:any)'] = 'Ruangan_Controller/get_ruangan_by_id/1';
+$route['api/get_ruangan_by_id/(:any)'] = 'Ruangan_Controller/get_ruangan_by_id/$1';
 $route['api/add_ruangan'] = 'Ruangan_Controller/add_ruangan';
 $route['api/update_ruangan'] = 'Ruangan_Controller/update_ruangan';
 $route['api/delete_ruangan/(:any)'] = 'Ruangan_Controller/delete_ruangan/$1';
 
 $route['api/get_mahasiswa_all'] = 'Mahasiswa_Controller/get_mahasiswa_all';
-$route['api/get_mahasiswa_by_id/(:any)'] = 'Mahasiswa_Controller/get_mahasiswa_by_id/1';
+$route['api/get_mahasiswa_by_id/(:any)'] = 'Mahasiswa_Controller/get_mahasiswa_by_id/$1';
 $route['api/add_mahasiswa'] = 'Mahasiswa_Controller/add_mahasiswa';
 $route['api/update_mahasiswa'] = 'Mahasiswa_Controller/update_mahasiswa';
 $route['api/delete_mahasiswa/(:any)'] = 'Mahasiswa_Controller/delete_mahasiswa/$1';
