@@ -30,7 +30,7 @@ class User_model extends CI_Model {
     }
 
     // Function to update a record
-    public function update($eemail, $data)
+    public function update($email, $data)
     {
         $this->db->where('email', $email);
         return $this->db->update('user', $data);
