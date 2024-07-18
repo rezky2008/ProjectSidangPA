@@ -21,10 +21,12 @@ class User_Controller extends CI_Controller {
 			$this->session->set_userdata('logged_in', true);
             $this->session->set_userdata('username', $user['user']->username);
 
-            $response['message'] = 'success'
+            $response['message'] = 'success';
+			
             $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
+
 		} else{
             $response['message'] = 'failed'
             $this->output
