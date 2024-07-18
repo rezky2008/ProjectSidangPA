@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class KoorPA_model extends CI_Model {
+class User_model extends CI_Model {
 
     public function __construct()
     {
@@ -12,35 +12,35 @@ class KoorPA_model extends CI_Model {
     // Function to get all records
     public function get_all()
     {
-        $query = $this->db->get('koorpa');
+        $query = $this->db->get('user');
         return $query->result();
     }
 
     // Function to get a single record by username
-    public function get_by_username($username)
+    public function get_by_email($email)
     {
-        $query = $this->db->get_where('koorpa', array('username' => $username));
+        $query = $this->db->get_where('user', array('email' => $email));
         return $query->row();
     }
 
     // Function to insert a new record
     public function insert($data)
     {
-        return $this->db->insert('koorpa', $data);
+        return $this->db->insert('user', $data);
     }
 
     // Function to update a record
-    public function update($username, $data)
+    public function update($eemail, $data)
     {
-        $this->db->where('username', $username);
-        return $this->db->update('koorpa', $data);
+        $this->db->where('email', $email);
+        return $this->db->update('user', $data);
     }
 
     // Function to delete a record
-    public function delete($username)
+    public function delete($email)
     {
-        $this->db->where('username', $username);
-        return $this->db->delete('koorpa');
+        $this->db->where('email', $email);
+        return $this->db->delete('user');
     }
 
     // Additional custom functions can be added here

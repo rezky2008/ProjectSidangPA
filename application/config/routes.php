@@ -74,3 +74,5 @@ $route['api/get_mahasiswa_by_id/(:any)'] = 'Mahasiswa_Controller/get_mahasiswa_b
 $route['api/add_mahasiswa'] = 'Mahasiswa_Controller/add_mahasiswa';
 $route['api/update_mahasiswa'] = 'Mahasiswa_Controller/update_mahasiswa';
 $route['api/delete_mahasiswa/(:any)'] = 'Mahasiswa_Controller/delete_mahasiswa/$1';
+
+$route['api/get_user_by_email/(:any)'] = 'User_Controller/get_user_by_email/$1';
