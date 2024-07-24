@@ -56,7 +56,7 @@ class Sidang_Controller extends CI_Controller {
     
         foreach ($ruangan as $jadwal_ruangan) {
             $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
-            $temp_result = array();
+            $temp_result = array_fill(0, 5, array_fill(0, 7, 0));
             $count_ones = 0;
     
             for ($i = 0; $i < 5; $i++) {
@@ -64,20 +64,15 @@ class Sidang_Controller extends CI_Controller {
                     if ($tipe_sidang == "akhir") {
                         // Check pairs of hours
                         if ($j == 0 || $j == 1) {
-                            if (!isset($temp_result[$i][0])) $temp_result[$i][0] = 0;
                             $temp_result[$i][0] = (int)($result[$i][0] && $ruangan_val[$i][0]);
                         } elseif ($j == 2 || $j == 3) {
-                            if (!isset($temp_result[$i][2])) $temp_result[$i][2] = 0;
                             $temp_result[$i][2] = (int)($result[$i][2] && $ruangan_val[$i][2]);
                         } elseif ($j == 4 || $j == 5) {
-                            if (!isset($temp_result[$i][4])) $temp_result[$i][4] = 0;
                             $temp_result[$i][4] = (int)($result[$i][4] && $ruangan_val[$i][4]);
                         } elseif ($j == 6) {
-                            if (!isset($temp_result[$i][5])) $temp_result[$i][5] = 0;
                             $temp_result[$i][5] = (int)($result[$i][5] && $ruangan_val[$i][5]);
                         }
                     } else {
-                        if (!isset($temp_result[$i][$j])) $temp_result[$i][$j] = 0;
                         $temp_result[$i][$j] = (int)($result[$i][$j] && $ruangan_val[$i][$j]);
                         if ($temp_result[$i][$j] == 1) {
                             $count_ones++;
@@ -108,6 +103,7 @@ class Sidang_Controller extends CI_Controller {
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
-    }    
+    }
+        
         
 }
