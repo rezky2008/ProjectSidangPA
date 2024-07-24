@@ -12,7 +12,7 @@ class Sidang_Controller extends CI_Controller {
     }
 
 
-    public function cari_jadwal(){
+    public function find_recom(){
         $data = json_decode(file_get_contents('php://input'), true);
 
         $data_mhs = $this->Mahasiswa_model->get_by_nim($data['mahasiswa']);
@@ -36,7 +36,7 @@ class Sidang_Controller extends CI_Controller {
             }
         }
 
-        $response['jadwal_gabungan'] = $result;
+        $response['test_hasil'] = $result;
 
         $this->output
             ->set_content_type('application/json')

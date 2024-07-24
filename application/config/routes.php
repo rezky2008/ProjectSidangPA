@@ -80,3 +80,5 @@ $route['api/get_user_all'] = 'User_Controller/get_user_all';
 $route['api/add_user'] = 'User_Controller/add_user';
 $route['api/update_user'] = 'User_Controller/update_user';
 $route['api/delete_user'] = 'User_Controller/delete_user';
+
+$route['api/find_recom'] = 'Sidang_Controller/find_recom';
