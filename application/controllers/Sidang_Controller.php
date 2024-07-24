@@ -16,9 +16,9 @@ class Sidang_Controller extends CI_Controller {
         $data = json_decode(file_get_contents('php://input'), true);
 
         $data_mhs = $this->Mahasiswa_model->get_by_nim($data['mahasiswa']);
-        $dosen_pbb = $this->Dosen_model->get_by_id($data['dosen_pbb']);
-        $dosen_pnj1 = $this->Dosen_model->get_by_id($data['dosen_pnj1']);
-        $dosen_pnj2 = $this->Dosen_model->get_by_id($data['dosen_pnj2']);
+        $dosen_pbb = $this->Dosen_model->get_by_name($data['dosen_pbb']);
+        $dosen_pnj1 = $this->Dosen_model->get_by_name($data['dosen_pnj1']);
+        $dosen_pnj2 = $this->Dosen_model->get_by_name($data['dosen_pnj2']);
         $ruangan = $this->Ruangan_model->get_all();
 
         $kelas_mhs = $this->Kelas_model->get_by_id($data_mhs->id_kelas);
