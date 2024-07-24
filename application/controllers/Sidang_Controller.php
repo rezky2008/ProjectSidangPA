@@ -14,6 +14,7 @@ class Sidang_Controller extends CI_Controller {
 
     public function find_recom() {
         $data = json_decode(file_get_contents('php://input'), true);
+        $tipe_sidang = $data['tipe_sidang']; // Get the type of schedule
     
         $data_mhs = $this->Mahasiswa_model->get_by_nim($data['mahasiswa']);
         $dosen_pbb = $this->Dosen_model->get_by_name($data['dosen_pbb']);
@@ -43,6 +44,29 @@ class Sidang_Controller extends CI_Controller {
             }
         }
     
+        if ($tipe_sidang == "akhir") {
+            for ($i = 0; $i < 5; $i++) {
+                for ($j = 0; $j < 7; $j++) {
+                    if ($result[$i][$j] == 1) {
+                        // If the element is "1", set it to "1,1" (represented by 1 for both slots)
+                        $result[$i][$j] = 1;
+                    } else {
+                        // If the element is "0", set it to "0,0" (represented by 0 for both slots)
+                        $result[$i][$j] = 0;
+                    }
+    
+                    // Special condition for first element in each array
+                    if ($j == 0) {
+                        if ($result[$i][$j] == 1) {
+                            $result[$i][$j] = [1, 1];
+                        } else {
+                            $result[$i][$j] = [0, 0];
+                        }
+                    }
+                }
+            }
+        }
+    
         $ruangan_with_counts = array();
     
         foreach ($ruangan as $jadwal_ruangan) {
@@ -52,9 +76,16 @@ class Sidang_Controller extends CI_Controller {
     
             for ($i = 0; $i < 5; $i++) {
                 for ($j = 0; $j < 7; $j++) {
-                    $temp_result[$i][$j] = (int)($result[$i][$j] && $ruangan_val[$i][$j]);
-                    if ($temp_result[$i][$j] == 1) {
-                        $count_ones++;
+                    if (is_array($result[$i][$j])) {
+                        $temp_result[$i][$j] = array_map(function($val) use ($ruangan_val, $i, $j) {
+                            return (int)($val && $ruangan_val[$i][$j]);
+                        }, $result[$i][$j]);
+                        $count_ones += array_sum($temp_result[$i][$j]);
+                    } else {
+                        $temp_result[$i][$j] = (int)($result[$i][$j] && $ruangan_val[$i][$j]);
+                        if ($temp_result[$i][$j] == 1) {
+                            $count_ones++;
+                        }
                     }
                 }
             }
@@ -81,5 +112,5 @@ class Sidang_Controller extends CI_Controller {
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
-    }
+    }    
 }
