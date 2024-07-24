@@ -21,7 +21,7 @@ class Sidang_Controller extends CI_Controller {
         $dosen_pnj2 = $this->Dosen_model->get_by_id($data['dosen_pnj2']);
         $ruangan = $this->Ruangan_model->get_all();
 
-        $kelas_mhs = $this->Kelas_model->get_kelas_by_id($data_mhs->id_kelas);
+        $kelas_mhs = $this->Kelas_model->get_by_id($data_mhs->id_kelas);
         $jadwal_kelas = $kelas_mhs->jadwal;
 
         $jadwal_pbb = $dosen_pbb->jadwal;
