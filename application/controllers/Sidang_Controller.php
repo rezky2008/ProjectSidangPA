@@ -43,7 +43,7 @@ class Sidang_Controller extends CI_Controller {
             }
         }
 
-        $response['test_hasil'] = $result;
+        $response['test_hasil'] = json_encode($result);
 
         $this->output
             ->set_content_type('application/json')
