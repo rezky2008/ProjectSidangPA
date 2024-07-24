@@ -14,7 +14,6 @@ class Sidang_Controller extends CI_Controller {
 
     public function find_recom() {
         $data = json_decode(file_get_contents('php://input'), true);
-        $tipe_sidang = $data['tipe_sidang'];
     
         $data_mhs = $this->Mahasiswa_model->get_by_nim($data['mahasiswa']);
         $dosen_pbb = $this->Dosen_model->get_by_name($data['dosen_pbb']);
@@ -41,26 +40,6 @@ class Sidang_Controller extends CI_Controller {
     
                 // Cast the result of the AND operation to an integer
                 $result[$i][$j] = (int)($kelas_val && $pbb_val && $pnj1_val && $pnj2_val);
-            }
-        }
-    
-        if ($tipe_sidang == "akhir") {
-            // Adjust the result array for "akhir" tipe_sidang
-            for ($i = 0; $i < 5; $i++) {
-                $adjusted_result = array();
-                for ($j = 0; $j < 7; $j++) {
-                    if ($j == 0) {
-                        // Special handling for the first hour (7:00 - 9:00)
-                        $adjusted_result[$j] = (int)($result[$i][$j] || $result[$i][$j+1]);
-                    } else if ($j < 6) {
-                        // Adjust for 2-hour ranges
-                        $adjusted_result[$j] = (int)($result[$i][$j] && $result[$i][$j+1]);
-                    } else {
-                        // Last hour (15:00 - 17:00) can only be checked by itself
-                        $adjusted_result[$j] = (int)($result[$i][$j]);
-                    }
-                }
-                $result[$i] = $adjusted_result;
             }
         }
     
