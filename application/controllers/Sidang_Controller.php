@@ -51,13 +51,13 @@ class Sidang_Controller extends CI_Controller {
                 for ($j = 0; $j < 7; $j++) {
                     if ($j == 0) {
                         // Special handling for the first hour (7:00 - 9:00)
-                        $adjusted_result[$j] = $result[$i][$j] || $result[$i][$j+1];
+                        $adjusted_result[$j] = (int)($result[$i][$j] || $result[$i][$j+1]);
                     } else if ($j < 6) {
                         // Adjust for 2-hour ranges
-                        $adjusted_result[$j] = $result[$i][$j] && $result[$i][$j+1];
+                        $adjusted_result[$j] = (int)($result[$i][$j] && $result[$i][$j+1]);
                     } else {
                         // Last hour (15:00 - 17:00) can only be checked by itself
-                        $adjusted_result[$j] = $result[$i][$j];
+                        $adjusted_result[$j] = (int)($result[$i][$j]);
                     }
                 }
                 $result[$i] = $adjusted_result;
