@@ -22,11 +22,11 @@ class Sidang_Controller extends CI_Controller {
         $ruangan = $this->Ruangan_model->get_all();
 
         $kelas_mhs = $this->Kelas_model->get_by_id($data_mhs->id_kelas);
-        $jadwal_kelas = $kelas_mhs->jadwal;
+        $jadwal_kelas = json_decode($kelas_mhs->jadwal, true);
 
-        $jadwal_pbb = $dosen_pbb->jadwal;
-        $jadwal_pnj1 = $dosen_pnj1->jadwal;
-        $jadwal_pnj2 = $dosen_pnj2->jadwal;
+        $jadwal_pbb = json_decode($dosen_pbb->jadwal, true);
+        $jadwal_pnj1 = json_decode($dosen_pnj1->jadwal, true);
+        $jadwal_pnj2 = json_decode($dosen_pnj2->jadwal, true);
 
         $result = array();
 
@@ -43,6 +43,7 @@ class Sidang_Controller extends CI_Controller {
             }
         }
 
+        // Convert the result array to a JSON string
         $response['test_hasil'] = json_encode($result);
 
         $this->output
