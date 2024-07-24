@@ -44,7 +44,7 @@ class Sidang_Controller extends CI_Controller {
         }
 
         foreach ($ruangan as $jadwal_ruangan) {
-            $jadwal_ruangan['jadwal']
+           
         }
 
         // Convert the result array to a JSON string
