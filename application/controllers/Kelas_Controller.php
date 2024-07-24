@@ -18,6 +18,7 @@ class Kelas_Controller extends CI_Controller {
     }
 
     public function get_kelas_by_id($id){
+        $id = urldecode($id);
         $response['data_kelas'] = $this->Kelas_model->get_by_id($id);
         $response['message'] = 'success';
 
