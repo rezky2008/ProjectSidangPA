@@ -15,75 +15,28 @@ class Sidang_Controller extends CI_Controller {
     public function cari_jadwal(){
         $data = json_decode(file_get_contents('php://input'), true);
 
-        $mhs = $data['mahasiswa'];
-        $dosen_pbb = $data['dosen_pbb'];
-        $dosen_pnj1 = $data['dosen_pnj1'];
-        $dosen_pnj2 = $data['dosen_pnj2'];
+        $data_mhs = $this->Mahasiswa_model->get_by_nim($data['mahasiswa']);
+        $dosen_pbb = $this->Dosen_model->get_by_name($data['dosen_pbb']);
+        $dosen_pnj1 = $this->Dosen_model->get_by_name($data['dosen_pnj1']);
+        $dosen_pnj2 = $this->Dosen_model->get_by_name($data['dosen_pnj2']);
+        $ruangan = $this->Ruangan_model->get_all();
 
-        $data_mhs = $this->Mahasiswa_model->get_by_nim($mhs);
-        $kelas_mhs = $this->Kelas_model->get_kelas_by_id($data_mhs['']);
+        $kelas_mhs = $this->Kelas_model->get_kelas_by_id($data_mhs['id_kelas']);
+        $jadwal_kelas = $kelas_mhs['jadwal'];
 
-        $insert_data = array(
-            'id_dosen' => $id_dosen,
-            'nama' => $nama,
-            'inisial' => $inisial,
-            'kbk' => $kbk,
-            'email' => $email,
-            // Add other necessary fields here
-        );
-        
+        $jadwal_pbb = $dosen_pbb['jadwal'];
 
-        if ($inserted) {
-            $response['message'] = 'success';
-        } else {
-            $response['message'] = 'failed';
+        $jadwal_pnj1 = $dosen_pnj1['jadwal'];
+
+        $jadwal_pnj2 = $dosen_pnj2['jadwal'];
+
+        for ($i = 0; $i < 5; $i++) {
+            for ($j = 0; $j < 7; $j++) {
+                $result[$i][$j] = $jadwal_kelas[$i][$j] && $jadwal_pbb[$i][$j] && $jadwal_pnj1[$i][$j] && $jadwal_pnj2[$i][$j];
+            }
         }
 
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($response));
-    }
-
-    public function update_dosen(){
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        $id_dosen = $data['id_dosen'];
-        $nama = $data['nama'];
-        $inisial = $data['inisial'];
-        $kbk = $data['kbk'];
-        $email = $data['email'];
-        $jadwal = $data['jadwal'];
-
-        $update_data = array(
-            'id_dosen' => $id_dosen,
-            'nama' => $nama,
-            'inisial' => $inisial,
-            'kbk' => $kbk,
-            'email' => $email,
-            'jadwal' => $jadwal,
-        );
-
-        $updated = $this->Dosen_model->update($id_dosen, $update_data); // Updated to use $id_dosen
-
-        if ($updated) {
-            $response['message'] = 'success';
-        } else {
-            $response['message'] = 'failed';
-        }
-
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($response));
-    }
-
-    public function delete_dosen($id){
-        $deleted = $this->Dosen_model->delete($id);
-
-        if ($deleted) {
-            $response['message'] = 'success';
-        } else {
-            $response['message'] = 'failed';
-        }
+        $response['jadwal_gabungan'] = $result;
 
         $this->output
             ->set_content_type('application/json')

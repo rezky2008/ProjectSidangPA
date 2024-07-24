@@ -23,6 +23,12 @@ class Dosen_model extends CI_Model {
         return $query->row();
     }
 
+    public function get_by_name($name)
+    {
+        $query = $this->db->get_where('dosen', array('nama' => $name));
+        return $query->row();
+    }
+
     // Function to insert a new record
     public function insert($data)
     {
