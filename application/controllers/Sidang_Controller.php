@@ -34,21 +34,33 @@ class Sidang_Controller extends CI_Controller {
         // Check if arrays are properly initialized and have the expected dimensions
         for ($i = 0; $i < 5; $i++) {
             for ($j = 0; $j < 7; $j++) {
-                if ($tipe_sidang == "akhir") {
-                    // Check pairs of hours
-                    if ($j == 0 || $j == 1) {
-                        $result[$i][0] = (int)($jadwal_kelas[$i][0] && $jadwal_pbb[$i][0] && $jadwal_pnj1[$i][0] && $jadwal_pnj2[$i][0]);
-                    } elseif ($j == 2 || $j == 3) {
-                        $result[$i][2] = (int)($jadwal_kelas[$i][2] && $jadwal_pbb[$i][2] && $jadwal_pnj1[$i][2] && $jadwal_pnj2[$i][2]);
-                    } elseif ($j == 4 || $j == 5) {
-                        $result[$i][4] = (int)($jadwal_kelas[$i][4] && $jadwal_pbb[$i][4] && $jadwal_pnj1[$i][4] && $jadwal_pnj2[$i][4]);
-                    } elseif ($j == 6) {
-                        $result[$i][5] = (int)($jadwal_kelas[$i][5] && $jadwal_pbb[$i][5] && $jadwal_pnj1[$i][5] && $jadwal_pnj2[$i][5]);
+                $kelas_val = $jadwal_kelas[$i][$j];
+                $pbb_val = $jadwal_pbb[$i][$j];
+                $pnj1_val = $jadwal_pnj1[$i][$j];
+                $pnj2_val = $jadwal_pnj2[$i][$j];
+    
+                // Cast the result of the AND operation to an integer
+                $result[$i][$j] = (int)($kelas_val && $pbb_val && $pnj1_val && $pnj2_val);
+            }
+        }
+    
+        if ($tipe_sidang == "akhir") {
+            // Adjust the result array for "akhir" tipe_sidang
+            for ($i = 0; $i < 5; $i++) {
+                $adjusted_result = array();
+                for ($j = 0; $j < 7; $j++) {
+                    if ($j == 0) {
+                        // Special handling for the first hour (7:00 - 9:00)
+                        $adjusted_result[$j] = $result[$i][$j] || $result[$i][$j+1];
+                    } else if ($j < 6) {
+                        // Adjust for 2-hour ranges
+                        $adjusted_result[$j] = $result[$i][$j] && $result[$i][$j+1];
+                    } else {
+                        // Last hour (15:00 - 17:00) can only be checked by itself
+                        $adjusted_result[$j] = $result[$i][$j];
                     }
-                } else {
-                    // Regular check for each hour
-                    $result[$i][$j] = (int)($jadwal_kelas[$i][$j] && $jadwal_pbb[$i][$j] && $jadwal_pnj1[$i][$j] && $jadwal_pnj2[$i][$j]);
                 }
+                $result[$i] = $adjusted_result;
             }
         }
     
@@ -56,27 +68,14 @@ class Sidang_Controller extends CI_Controller {
     
         foreach ($ruangan as $jadwal_ruangan) {
             $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
-            $temp_result = array_fill(0, 5, array_fill(0, 7, 0));
+            $temp_result = array();
             $count_ones = 0;
     
             for ($i = 0; $i < 5; $i++) {
                 for ($j = 0; $j < 7; $j++) {
-                    if ($tipe_sidang == "akhir") {
-                        // Check pairs of hours
-                        if ($j == 0 || $j == 1) {
-                            $temp_result[$i][0] = (int)($result[$i][0] && $ruangan_val[$i][0]);
-                        } elseif ($j == 2 || $j == 3) {
-                            $temp_result[$i][2] = (int)($result[$i][2] && $ruangan_val[$i][2]);
-                        } elseif ($j == 4 || $j == 5) {
-                            $temp_result[$i][4] = (int)($result[$i][4] && $ruangan_val[$i][4]);
-                        } elseif ($j == 6) {
-                            $temp_result[$i][5] = (int)($result[$i][5] && $ruangan_val[$i][5]);
-                        }
-                    } else {
-                        $temp_result[$i][$j] = (int)($result[$i][$j] && $ruangan_val[$i][$j]);
-                        if ($temp_result[$i][$j] == 1) {
-                            $count_ones++;
-                        }
+                    $temp_result[$i][$j] = (int)($result[$i][$j] && $ruangan_val[$i][$j]);
+                    if ($temp_result[$i][$j] == 1) {
+                        $count_ones++;
                     }
                 }
             }
@@ -104,6 +103,5 @@ class Sidang_Controller extends CI_Controller {
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
     }
-        
-        
+    
 }
