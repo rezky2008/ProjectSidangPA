@@ -29,6 +29,7 @@ class Sidang_Controller extends CI_Controller {
         $jadwal_pnj2 = json_decode($dosen_pnj2->jadwal, true);
 
         $result = array();
+        
 
         // Check if arrays are properly initialized and have the expected dimensions
         for ($i = 0; $i < 5; $i++) {
@@ -44,11 +45,19 @@ class Sidang_Controller extends CI_Controller {
         }
 
         foreach ($ruangan as $jadwal_ruangan) {
-           
+           $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
+           $temp_result = array();
+           for ($i = 0; $i< 5; $i++){
+            for ($j = 0; $j < 7; $j++){
+                $temp_result[$i][$j] = (int)($result[$i][$j] && $ruangan_val[$i][$j]);
+            }
+           }
+           $jadwal_ruangan->jadwal = json_encode($temp_result);
         }
 
         // Convert the result array to a JSON string
         $response['jadwal_without_ruangan'] = json_encode($result);
+        $response['data_jadwal_ruangan'] = $ruangan;
 
         $this->output
             ->set_content_type('application/json')
