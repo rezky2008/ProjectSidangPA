@@ -33,6 +33,10 @@ class Sidang_Controller extends CI_Controller {
         // Check if arrays are properly initialized and have the expected dimensions
         for ($i = 0; $i < 5; $i++) {
             for ($j = 0; $j < 7; $j++) {
+                $kelas_val = $jadwal_kelas[$i][$j];
+                $pbb_val = $jadwal_pbb[$i][$j];
+                $pnj1_val = $jadwal_pnj1[$i][$j];
+                $pnj2_val = $jadwal_pnj2[$i][$j];
 
                 // Cast the result of the AND operation to an integer
                 $result[$i][$j] = (int)($kelas_val && $pbb_val && $pnj1_val && $pnj2_val);
@@ -40,7 +44,7 @@ class Sidang_Controller extends CI_Controller {
         }
 
         foreach ($ruangan as $jadwal_ruangan) {
-            
+            $jadwal_ruangan['jadwal']
         }
 
         // Convert the result array to a JSON string
