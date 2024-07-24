@@ -38,14 +38,16 @@ class Sidang_Controller extends CI_Controller {
                 $pnj1_val = isset($jadwal_pnj1[$i][$j]) ? $jadwal_pnj1[$i][$j] : 0;
                 $pnj2_val = isset($jadwal_pnj2[$i][$j]) ? $jadwal_pnj2[$i][$j] : 0;
 
-                $result[$i][$j] = $kelas_val && $pbb_val && $pnj1_val && $pnj2_val;
+                // Cast the result of the AND operation to an integer
+                $result[$i][$j] = (int)($kelas_val && $pbb_val && $pnj1_val && $pnj2_val);
             }
         }
 
-        $response['test_hasil'] = $result;
+        $response['test_hasil'] = "$result";
 
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
+
     }
 }
