@@ -9,6 +9,7 @@ class Sidang_Controller extends CI_Controller {
         $this->load->model('Kelas_model');
         $this->load->model('Mahasiswa_model');
         $this->load->model('Ruangan_model');
+        $this->load->model('Sidang_model');
     }
 
 
@@ -29,10 +30,9 @@ class Sidang_Controller extends CI_Controller {
         $jadwal_pnj2 = json_decode($dosen_pnj2->jadwal, true);
     
         $result = array();
-    
-        // Check if arrays are properly initialized and have the expected dimensions
+
         for ($i = 0; $i < 5; $i++) {
-            for ($j = 0; $j < 7; $j++) {
+            for ($j = 0; $j < 10; $j++) {
                 $kelas_val = $jadwal_kelas[$i][$j];
                 $pbb_val = $jadwal_pbb[$i][$j];
                 $pnj1_val = $jadwal_pnj1[$i][$j];
@@ -42,42 +42,168 @@ class Sidang_Controller extends CI_Controller {
                 $result[$i][$j] = (int)($kelas_val && $pbb_val && $pnj1_val && $pnj2_val);
             }
         }
-    
-        $ruangan_with_counts = array();
-    
+        
+
         foreach ($ruangan as $jadwal_ruangan) {
             $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
             $temp_result = array();
-            $count_ones = 0;
     
             for ($i = 0; $i < 5; $i++) {
-                for ($j = 0; $j < 7; $j++) {
+                for ($j = 0; $j < 10; $j++) {
                     $temp_result[$i][$j] = (int)($result[$i][$j] && $ruangan_val[$i][$j]);
-                    if ($temp_result[$i][$j] == 1) {
-                        $count_ones++;
-                    }
                 }
             }
     
             $jadwal_ruangan->jadwal = json_encode($temp_result);
-            $ruangan_with_counts[] = array('ruangan' => $jadwal_ruangan, 'count' => $count_ones);
         }
-    
-        // Sort the rooms based on the count of ones in descending order
-        usort($ruangan_with_counts, function($a, $b) {
-            return $b['count'] - $a['count'];
-        });
-    
-        // Get the top 10 rooms
-        $top_10_ruangan = array_slice($ruangan_with_counts, 0, 10);
-        $top_10_ruangan = array_map(function($item) {
-            return $item['ruangan'];
-        }, $top_10_ruangan);
+
+        if (data['tipe_sidang'] == "akhir"){
+            for ($i = 0; $i < 5; $i++) {
+                $temp_result = array();
+                for ($j = 0; $j < 9; $j++) {
+                    $temp_result[$j] = (int)($result[$i][$j] && $result[$i][$j+1]);
+                }
+                $result[$i] = $temp_result;
+            }
+
+            foreach ($ruangan as $jadwal_ruangan) {
+                $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
+                $temp_result = array();
+        
+                for ($i = 0; $i < 5; $i++) {
+                    for ($j = 0; $j < 9; $j++) {
+                        $temp_result[$i][$j] = (int)($ruangan_val[$i][$j] && $ruangan_val[$i][$j+1]);
+                    }
+                }
+        
+                $jadwal_ruangan->jadwal = json_encode($temp_result);
+            }
+        }
+
+
+        
     
         // Convert the result array to a JSON string
         $response['jadwal_without_ruangan'] = json_encode($result);
-        $response['data_jadwal_ruangan'] = $top_10_ruangan;
+        $response['data_jadwal_ruangan'] = $ruangan;
     
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
+    public function get_sidang_all(){
+        $response['data_sidang'] = $this->sidang_model->get_all();
+        $response['message'] = 'success';
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
+    public function get_sidang_by_id($id){
+        $id = urldecode($id);
+        $response['data_sidang'] = $this->sidang_model->get_by_id($id);
+        $response['message'] = 'success';
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
+    public function add_sidang(){
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (!isset($data['id_sidang'])) {
+            $response = ['message' => 'failed', 'error' => 'id_sidang is required'];
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));
+            return;
+        }
+
+        $mahasiswa = $data['mahasiswa'];
+        $pembimbing = $data['pembimbing'];
+        $penguji1 = $data['penguji1'];
+        $penguji2 = $data['penguji2'];
+        $tipe_sidang = $data['tipe_sidang'];
+        $ruang = $data['ruang'];
+        $hari = $data['hari'];
+        $jam = $data['jam'];
+
+        $insert_data = array(
+            'mahasiswa' => $mahasiswa,
+            'pembimbing' => $pembimbing,
+            'penguji1' => $penguji1,
+            'penguji2' => $penguji2,
+            'tipe_sidang' => $tipe_sidang,
+            'ruang' => $ruang,
+            'hari' => $hari,
+            'jam' => $jam,
+            // Add other necessary fields here
+        );
+        
+        $inserted = $this->sidang_model->insert($insert_data);
+
+        if ($inserted) {
+            $response['message'] = 'success';
+        } else {
+            $response['message'] = 'failed';
+        }
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
+    public function update_sidang(){
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $id_sidang = $data['id_sidang'];
+        $mahasiswa = $data['mahasiswa'];
+        $pembimbing = $data['pembimbing'];
+        $penguji1 = $data['penguji1'];
+        $penguji2 = $data['penguji2'];
+        $tipe_sidang = $data['tipe_sidang'];
+        $ruang = $data['ruang'];
+        $hari = $data['hari'];
+        $jam = $data['jam'];
+
+        $insert_data = array(
+            'id_sidang' => $id_sidang,
+            'mahasiswa' => $mahasiswa,
+            'pembimbing' => $pembimbing,
+            'penguji1' => $penguji1,
+            'penguji2' => $penguji2,
+            'tipe_sidang' => $tipe_sidang,
+            'ruang' => $ruang,
+            'hari' => $hari,
+            'jam' => $jam,
+            // Add other necessary fields here
+        );
+
+        $updated = $this->sidang_model->update($id_sidang, $update_data); // Updated to use $id_sidang
+
+        if ($updated) {
+            $response['message'] = 'success';
+        } else {
+            $response['message'] = 'failed';
+        }
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
+    public function delete_sidang($id){
+        $deleted = $this->sidang_model->delete($id);
+
+        if ($deleted) {
+            $response['message'] = 'success';
+        } else {
+            $response['message'] = 'failed';
+        }
+
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
