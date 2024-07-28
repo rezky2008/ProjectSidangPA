@@ -136,7 +136,7 @@ class Sidang_Controller extends CI_Controller {
             // Add other necessary fields here
         );
         
-        $inserted = $this->sidang_model->insert($insert_data);
+        $inserted = $this->Sidang_model->insert($insert_data);
 
         if ($inserted) {
             $response['message'] = 'success';
