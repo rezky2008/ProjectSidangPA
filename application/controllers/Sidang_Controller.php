@@ -125,10 +125,6 @@ class Sidang_Controller extends CI_Controller {
         $waktu_display = $data['waktu_display'];
         $waktu_index = $data['waktu_index'];
 
-        $index_waktu = $waktu_index.str_split(" ");
-        $hari = int($index_waktu[0]);
-        $jam = int($index_waktu[1]);
-
         $insert_data = array(
             'mahasiswa' => $mahasiswa,
             'pembimbing' => $pembimbing,
