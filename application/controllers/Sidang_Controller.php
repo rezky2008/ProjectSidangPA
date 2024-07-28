@@ -120,6 +120,7 @@ class Sidang_Controller extends CI_Controller {
         $penguji1 = $data['penguji1'];
         $penguji2 = $data['penguji2'];
         $tipe_sidang = $data['tipe_sidang'];
+        $ruang = $data['ruang'];
         $waktu_display = $data['waktu_display'];
         $waktu_index = $data['waktu_index'];
 
