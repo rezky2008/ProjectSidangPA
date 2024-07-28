@@ -115,14 +115,6 @@ class Sidang_Controller extends CI_Controller {
     public function add_sidang(){
         $data = json_decode(file_get_contents('php://input'), true);
 
-        if (!isset($data['id_sidang'])) {
-            $response = ['message' => 'failed', 'error' => 'id_sidang is required'];
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));
-            return;
-        }
-
         $mahasiswa = $data['mahasiswa'];
         $pembimbing = $data['pembimbing'];
         $penguji1 = $data['penguji1'];
