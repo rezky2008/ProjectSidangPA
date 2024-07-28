@@ -128,9 +128,8 @@ class Sidang_Controller extends CI_Controller {
         $penguji1 = $data['penguji1'];
         $penguji2 = $data['penguji2'];
         $tipe_sidang = $data['tipe_sidang'];
-        $ruang = $data['ruang'];
-        $hari = $data['hari'];
-        $jam = $data['jam'];
+        $waktu_display = $data['waktu_display'];
+        $waktu_index = $data['waktu_index'];
 
         $insert_data = array(
             'mahasiswa' => $mahasiswa,
@@ -139,8 +138,8 @@ class Sidang_Controller extends CI_Controller {
             'penguji2' => $penguji2,
             'tipe_sidang' => $tipe_sidang,
             'ruang' => $ruang,
-            'hari' => $hari,
-            'jam' => $jam,
+            'waktu_display' => $waktu_display,
+            'waktu_index' => $waktu_index,
             // Add other necessary fields here
         );
         
@@ -167,8 +166,8 @@ class Sidang_Controller extends CI_Controller {
         $penguji2 = $data['penguji2'];
         $tipe_sidang = $data['tipe_sidang'];
         $ruang = $data['ruang'];
-        $hari = $data['hari'];
-        $jam = $data['jam'];
+        $waktu_display = $data['waktu_display'];
+        $waktu_index = $data['waktu_index'];
 
         $insert_data = array(
             'id_sidang' => $id_sidang,
@@ -178,8 +177,8 @@ class Sidang_Controller extends CI_Controller {
             'penguji2' => $penguji2,
             'tipe_sidang' => $tipe_sidang,
             'ruang' => $ruang,
-            'hari' => $hari,
-            'jam' => $jam,
+            'waktu_display' => $waktu_display,
+            'waktu_index' => $waktu_index,
             // Add other necessary fields here
         );
 
