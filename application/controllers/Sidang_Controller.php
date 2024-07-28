@@ -22,10 +22,11 @@ class Sidang_Controller extends CI_Controller {
         $dosen_pnj2 = $this->Dosen_model->get_by_name($data['dosen_pnj2']);
         $tipe_sidang = $data['tipe_sidang'];
         $ruangan = $this->Ruangan_model->get_all();
+        $sidang = $this->Sidang_model->get_all();
     
         $kelas_mhs = $this->Kelas_model->get_by_id($data_mhs->id_kelas);
         $jadwal_kelas = json_decode($kelas_mhs->jadwal, true);
-    
+        
         $jadwal_pbb = json_decode($dosen_pbb->jadwal, true);
         $jadwal_pnj1 = json_decode($dosen_pnj1->jadwal, true);
         $jadwal_pnj2 = json_decode($dosen_pnj2->jadwal, true);
@@ -94,7 +95,7 @@ class Sidang_Controller extends CI_Controller {
     }
 
     public function get_sidang_all(){
-        $response['data_sidang'] = $this->sidang_model->get_all();
+        $response['data_sidang'] = $this->Sidang_model->get_all();
         $response['message'] = 'success';
 
         $this->output
@@ -104,7 +105,7 @@ class Sidang_Controller extends CI_Controller {
 
     public function get_sidang_by_id($id){
         $id = urldecode($id);
-        $response['data_sidang'] = $this->sidang_model->get_by_id($id);
+        $response['data_sidang'] = $this->Sidang_model->get_by_id($id);
         $response['message'] = 'success';
 
         $this->output
@@ -123,6 +124,10 @@ class Sidang_Controller extends CI_Controller {
         $ruang = $data['ruang'];
         $waktu_display = $data['waktu_display'];
         $waktu_index = $data['waktu_index'];
+
+        $index_waktu = $waktu_index.str_split(" ");
+        $hari = int($index_waktu[0]);
+        $jam = int($index_waktu[1]);
 
         $insert_data = array(
             'mahasiswa' => $mahasiswa,
@@ -175,7 +180,7 @@ class Sidang_Controller extends CI_Controller {
             // Add other necessary fields here
         );
 
-        $updated = $this->sidang_model->update($id_sidang, $update_data); // Updated to use $id_sidang
+        $updated = $this->Sidang_model->update($id_sidang, $update_data); // Updated to use $id_sidang
 
         if ($updated) {
             $response['message'] = 'success';
@@ -189,7 +194,7 @@ class Sidang_Controller extends CI_Controller {
     }
 
     public function delete_sidang($id){
-        $deleted = $this->sidang_model->delete($id);
+        $deleted = $this->Sidang_model->delete($id);
 
         if ($deleted) {
             $response['message'] = 'success';
