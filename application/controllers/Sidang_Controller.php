@@ -20,6 +20,7 @@ class Sidang_Controller extends CI_Controller {
         $dosen_pbb = $this->Dosen_model->get_by_name($data['dosen_pbb']);
         $dosen_pnj1 = $this->Dosen_model->get_by_name($data['dosen_pnj1']);
         $dosen_pnj2 = $this->Dosen_model->get_by_name($data['dosen_pnj2']);
+        $tipe_sidang = $data['tipe_sidang'];
         $ruangan = $this->Ruangan_model->get_all();
     
         $kelas_mhs = $this->Kelas_model->get_by_id($data_mhs->id_kelas);
@@ -57,7 +58,7 @@ class Sidang_Controller extends CI_Controller {
             $jadwal_ruangan->jadwal = json_encode($temp_result);
         }
 
-        if (data['tipe_sidang'] == "akhir"){
+        if ($tipe_sidang == "akhir"){
             for ($i = 0; $i < 5; $i++) {
                 $temp_result = array();
                 for ($j = 0; $j < 9; $j++) {
