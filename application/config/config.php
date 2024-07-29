@@ -531,13 +531,5 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
-$config['protocol'] = 'smtp';
-$config['smtp_host'] = 'ssl://smtp.gmail.com';
-$config['smtp_port'] = 465;
-$config['smtp_user'] = 'lunarknight20@gmail.com';
-$config['smtp_pass'] = 'xjoufcoibxcbxttg';
-$config['mailtype'] = 'html';
-$config['charset'] = 'iso-8859-1';
-$config['wordwrap'] = TRUE;
-$config['newline'] = "\r\n"; // Note: must use double quotes for newline
+
 
