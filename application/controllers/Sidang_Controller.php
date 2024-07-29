@@ -220,7 +220,7 @@ class Sidang_Controller extends CI_Controller {
 
         $ruang_sidang = $data_sidang->ruang;
         $tipe_sidang = $data_sidang->tipe_sidang;
-        $waktu_sidang = $data_sidang->waktu_display;
+        $waktu_sidang = $data_sidang->waktu_index;
 
         $koordinat_waktu = array_map('intval', explode(" ", $waktu_sidang));
         $hari = $koordinat_waktu[0];
@@ -260,7 +260,7 @@ class Sidang_Controller extends CI_Controller {
     
         $ruang_sidang = $data_sidang->ruang;
         $tipe_sidang = ucfirst($data_sidang->tipe_sidang);
-        $waktu_sidang = $data_sidang->waktu_index;
+        $waktu_sidang = $data_sidang->waktu_display;
         $nama_mahasiswa = $data_sidang->nama_mahasiswa;
     
         $nim_mahasiswa = $data_sidang->nim_mahasiswa;
