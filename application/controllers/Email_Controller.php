@@ -8,8 +8,8 @@ class Email_Controller extends CI_Controller {
                 'protocol' => 'smtp',
                 'smtp_host' => 'ssl://smtp.gmail.com',
                 'smtp_port' => 465,
-                'smtp_user' => 'lunarknight20@gmail.com',
-                'smtp_pass' => 'xjoufcoibxcbxttg', // Your app password without spaces
+                'smtp_user' => 'rezky20ti@mahasiswa.pcr.ac.id',
+                'smtp_pass' => 'zpazeabxzhffwsth', // Your app password without spaces
                 'mailtype' => 'html',
                 'charset' => 'iso-8859-1',
                 'wordwrap' => TRUE,
@@ -18,8 +18,8 @@ class Email_Controller extends CI_Controller {
     
             $this->email->initialize($config);
     
-            $this->email->from('lunarknight20@gmail.com', 'Rezky Kurniawan');
-            $this->email->to('rezky20ti@mahasiswa.pcr.ac.id');
+            $this->email->from('rezky20ti@mahasiswa.pcr.ac.id', 'PenjadwalanPA');
+            $this->email->to('lunarknight20@gmail.com');
             $this->email->subject('Email Test');
             $this->email->message('Testing the email class.');
     
