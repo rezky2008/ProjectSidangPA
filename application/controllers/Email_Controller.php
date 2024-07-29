@@ -1,8 +1,6 @@
 <?php
 class Email_Controller extends CI_Controller {
 
-    class EmailController extends CI_Controller {
-
         public function send_mail() {
             $this->load->library('email');
     
