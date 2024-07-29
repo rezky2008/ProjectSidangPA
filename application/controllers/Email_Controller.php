@@ -6,8 +6,8 @@ class Email_Controller extends CI_Controller {
 
         // No need to set configuration here since it's already in config/email.php
 
-        $this->email->from('wedri20ti@mahasiswa.pcr.ac.id', 'Penjadwalan PA');
-        $this->email->to('lunarknight20@gmail.com');
+        $this->email->from('lunarknight20@gmail.com', 'Penjadwalan PA');
+        $this->email->to('lunarknight000@gmail.com');
         $this->email->subject('Email Test');
         $this->email->message('Testing the email class.');
 
