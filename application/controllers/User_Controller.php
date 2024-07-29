@@ -53,20 +53,10 @@ class User_Controller extends CI_Controller {
             ->set_output(json_encode($response));
     }
 
-	public function get_user_by_email(){
+	public function get_user_by_id($id){
 		$data = json_decode(file_get_contents('php://input'), true);
 
-        if (!isset($data['email'])) {
-            $response = ['message' => 'failed', 'error' => 'email is required'];
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));
-            return;
-        }
-
-		$email = $data['email'];
-
-        $response['data_user'] = $this->User_model->get_by_email($email);
+        $response['data_user'] = $this->User_model->get_by_id($id);
         $response['message'] = 'success';
 
         $this->output

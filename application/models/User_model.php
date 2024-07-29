@@ -17,9 +17,9 @@ class User_model extends CI_Model {
     }
 
     // Function to get a single record by username
-    public function get_by_email($email)
+    public function get_by_id($id)
     {
-        $query = $this->db->get_where('user', array('email' => $email));
+        $query = $this->db->get_where('user', array('id_user' => $id));
         return $query->row();
     }
 
