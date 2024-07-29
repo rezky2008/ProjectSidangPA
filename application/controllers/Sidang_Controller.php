@@ -254,7 +254,7 @@ class Sidang_Controller extends CI_Controller {
             ->set_output(json_encode($response));
     }
 
-    public_function send_email(){
+    public function send_email(){
 
     }
     
