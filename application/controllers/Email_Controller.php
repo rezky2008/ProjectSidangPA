@@ -22,8 +22,8 @@ class Email_Controller extends CI_Controller {
             $this->email->to('lunarknight20@gmail.com');
             $this->email->subject('Email Test');
             $this->email->message(
-                'Mencoba baris 1 \r\n
-                Mencoba baris 2\r\n
+                'Mencoba baris 1 "\r\n"
+                Mencoba baris 2 "\r\n"
                 Mencoba baris 3'
             );
     
