@@ -231,7 +231,7 @@ class Sidang_Controller extends CI_Controller {
         }
         $ruang_jadwal_updated = json_encode($ruang_jadwal);
         $update_jadwal = array(
-            'id_ruangan' => $ruang,
+            'id_ruangan' => $ruang_sidang,
             'jadwal' => $ruang_jadwal_updated,
         );
 
