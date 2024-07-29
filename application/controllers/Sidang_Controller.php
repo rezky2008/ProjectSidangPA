@@ -159,7 +159,7 @@ class Sidang_Controller extends CI_Controller {
             $update_jadwal = array(
                 'id_ruangan' => $ruang,
                 'jadwal' => $ruang_jadwal_updated,
-            )
+            );
 
             $this->Ruangan_model->update($ruang, $update_jadwal);
         } else {
@@ -233,7 +233,7 @@ class Sidang_Controller extends CI_Controller {
         $update_jadwal = array(
             'id_ruangan' => $ruang,
             'jadwal' => $ruang_jadwal_updated,
-        )
+        );
 
         $this->Ruangan_model->update($ruang, $update_jadwal);
 
