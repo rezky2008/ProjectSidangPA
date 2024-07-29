@@ -296,7 +296,7 @@ class Sidang_Controller extends CI_Controller {
     
         $this->email->from('rezky20ti@mahasiswa.pcr.ac.id', 'Sistem Penjadwalan PA');
         $this->email->to($daftar_email); // Specify multiple recipients here
-        $this->email->subject("[Sidang $tipe_sidang] $nama_mahasiswa");
+        $this->email->subject("[no-reply] Sidang $tipe_sidang | $nama_mahasiswa");
     
         $message = "
         <p>Assalamu'alaikum Wr.Wb</p>
