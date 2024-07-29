@@ -14,7 +14,7 @@ class Email_Controller extends CI_Controller {
             'mailtype'  => 'html', 
             'charset'   => 'utf-8', // or 'iso-8859-1'
             'wordwrap'  => TRUE,
-            'smtp_crypto' => 'tls' // Use 'ssl' if using port 465
+            'smtp_crypto' => 'ssl' // Use 'ssl' if using port 465
         );
 
         $this->email->initialize($config);
