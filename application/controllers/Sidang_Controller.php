@@ -219,7 +219,7 @@ class Sidang_Controller extends CI_Controller {
 
         $ruang_sidang = $data_sidang->ruang;
         $tipe_sidang = $data_sidang->tipe_sidang;
-        $waktu_sidang = $data_sidang->waktu_index;
+        $waktu_sidang = $data_sidang->waktu_display;
 
         $koordinat_waktu = array_map('intval', explode(" ", $waktu_sidang));
         $hari = $koordinat_waktu[0];
@@ -254,8 +254,67 @@ class Sidang_Controller extends CI_Controller {
             ->set_output(json_encode($response));
     }
 
-    public function send_email(){
-
+    public function send_mail($id) {
+        $data_sidang = $this->Sidang_model->get_by_id($id);
+    
+        $ruang_sidang = $data_sidang->ruang;
+        $tipe_sidang = ucfirst($data_sidang->tipe_sidang);
+        $waktu_sidang = $data_sidang->waktu_index;
+        $nama_mahasiswa = $data_sidang->nama_mahasiswa;
+    
+        $nim_mahasiswa = $data_sidang->nim_mahasiswa;
+        $nama_pembimbing = $data_sidang->pembimbing;
+        $nama_penguji1 = $data_sidang->penguji1;
+        $nama_penguji2 = $data_sidang->penguji2;
+    
+        $data_mhs = $this->Mahasiswa_model->get_by_nim($nim_mahasiswa);
+        $data_pbb = $this->Dosen_model->get_by_name($nama_pembimbing);
+        $data_pnj1 = $this->Dosen_model->get_by_name($nama_penguji1);
+        $data_pnj2 = $this->Dosen_model->get_by_name($nama_penguji2);
+    
+        $email_mhs = $data_mhs->email;
+        $email_pbb = $data_pbb->email;
+        $email_pnj1 = $data_pnj1->email;
+        $email_pnj2 = $data_pnj2->email;
+    
+        $daftar_email = [$email_mhs, $email_pbb, $email_pnj1, $email_pnj2];
+    
+        $config = array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.gmail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'rezky20ti@mahasiswa.pcr.ac.id',
+            'smtp_pass' => 'zpazeabxzhffwsth',
+            'mailtype' => 'html',
+            'charset' => 'iso-8859-1',
+            'wordwrap' => TRUE,
+            'newline' => "\r\n"
+        );
+    
+        $this->email->initialize($config);
+    
+        $this->email->from('rezky20ti@mahasiswa.pcr.ac.id', 'Sistem Penjadwalan PA');
+        $this->email->to($daftar_email); // Specify multiple recipients here
+        $this->email->subject("[Sidang $tipe_sidang] $nama_mahasiswa");
+    
+        $message = "
+        <p>Assalamu'alaikum Wr.Wb</p>
+        <p>Dengan email ini kami mengundang hadirin untuk menghadiri Sidang $tipe_sidang mahasiswa $nama_mahasiswa yang akan dilaksanakan pada:</p>
+        <p>Tempat : R $ruang_sidang</p>
+        <p>Waktu : $waktu_sidang</p>
+        <p>Kami harap hadirin dapat menghadiri acara sidang ini</p>
+        <br>
+        <p>Terima kasih,</p>
+        <p>Sistem Penjadwalan PA</p>
+        ";
+    
+        $this->email->message($message);
+    
+        if ($this->email->send()) {
+            echo 'Email sent.';
+        } else {
+            show_error($this->email->print_debugger());
+        }
     }
     
 }
