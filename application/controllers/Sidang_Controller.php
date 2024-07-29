@@ -116,7 +116,8 @@ class Sidang_Controller extends CI_Controller {
     public function add_sidang(){
         $data = json_decode(file_get_contents('php://input'), true);
 
-        $mahasiswa = $data['mahasiswa'];
+        $nama_mahasiswa = $data['nama_mahasiswa'];
+        $nim_mahasiswa = $data['nim_mahasiswa'];
         $pembimbing = $data['pembimbing'];
         $penguji1 = $data['penguji1'];
         $penguji2 = $data['penguji2'];
@@ -140,7 +141,8 @@ class Sidang_Controller extends CI_Controller {
         $ruang_jadwal_updated = json_encode($ruang_jadwal);
 
         $insert_data = array(
-            'mahasiswa' => $mahasiswa,
+            'nama_mahasiswa' => $nama_mahasiswa,
+            'nim_mahasiswa' => $nim_mahasiswa,
             'pembimbing' => $pembimbing,
             'penguji1' => $penguji1,
             'penguji2' => $penguji2,
@@ -175,7 +177,8 @@ class Sidang_Controller extends CI_Controller {
         $data = json_decode(file_get_contents('php://input'), true);
 
         $id_sidang = $data['id_sidang'];
-        $mahasiswa = $data['mahasiswa'];
+        $nama_mahasiswa = $data['nama_mahasiswa'];
+        $nim_mahasiswa = $data['nim_mahasiswa'];
         $pembimbing = $data['pembimbing'];
         $penguji1 = $data['penguji1'];
         $penguji2 = $data['penguji2'];
@@ -186,7 +189,8 @@ class Sidang_Controller extends CI_Controller {
 
         $insert_data = array(
             'id_sidang' => $id_sidang,
-            'mahasiswa' => $mahasiswa,
+            'nama_mahasiswa' => $nama_mahasiswa,
+            'nim_mahasiswa' => $nim_mahasiswa,
             'pembimbing' => $pembimbing,
             'penguji1' => $penguji1,
             'penguji2' => $penguji2,
@@ -248,6 +252,10 @@ class Sidang_Controller extends CI_Controller {
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
+    }
+
+    public_function send_email(){
+
     }
     
 }
