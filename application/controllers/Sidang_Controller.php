@@ -213,9 +213,9 @@ class Sidang_Controller extends CI_Controller {
     public function delete_sidang($id){
         $data_sidang = $this->Sidang_model->get_by_id($id);
 
-        $ruang_sidang = $data_sidang['ruang'];
-        $tipe_sidang = $data_sidang['tipe_sidang'];
-        $waktu_sidang = $data_sidang['waktu_index'];
+        $ruang_sidang = $data_sidang->ruang;
+        $tipe_sidang = $data_sidang->tipe_sidang;
+        $waktu_sidang = $data_sidang->waktu_index;
 
         $koordinat_waktu = array_map('intval', explode(" ", $waktu_sidang));
         $hari = $koordinat_waktu[0];
