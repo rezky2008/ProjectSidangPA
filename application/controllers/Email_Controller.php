@@ -30,6 +30,4 @@ class Email_Controller extends CI_Controller {
             }
         }
     }
-    
-}
 ?>
