@@ -25,6 +25,30 @@ class Email_Controller extends CI_Controller {
             <p>Testing the email class.</p>
             <p>This is the second line.</p>
             <p>This is the third line.</p>
+            <table>
+                <tr>
+                    <td>
+                        <p>Ruang</p>
+                    </td>
+                    <td>
+                        <p> : </p>
+                    </td>
+                    <td>
+                        <p>301</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Waktu</p>
+                    </td>
+                    <td>
+                        <p> : </p>
+                    </td>
+                    <td>
+                        <p>Senin, 07.00 - 09.00</p>
+                    </td>
+                </tr>
+            </table>
             ";
             $this->email->message($message);
     
@@ -34,5 +58,6 @@ class Email_Controller extends CI_Controller {
                 show_error($this->email->print_debugger());
             }
         }
+        
     }
 ?>
