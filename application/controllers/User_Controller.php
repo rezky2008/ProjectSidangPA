@@ -114,19 +114,21 @@ class User_Controller extends CI_Controller {
     public function update_user(){
         $data = json_decode(file_get_contents('php://input'), true);
 
+        $id_user = $data['id_user'];
         $email = $data['email'];
         $password = $data['password'];
         $role = $data['role'];
         $nama = $data['nama'];
 
         $update_data = array(
+            'id_user' => $id_user,
             'email' => $email,
             'password' => $password,
             'role' => $role,
             'nama' => $nama
         );
 
-        $updated = $this->User_model->update($email, $update_data); // Updated to use $email
+        $updated = $this->User_model->update($id, $update_data); // Updated to use $email
 
         if ($updated) {
             $response['message'] = 'success';
@@ -139,19 +141,8 @@ class User_Controller extends CI_Controller {
             ->set_output(json_encode($response));
     }
 
-    public function delete_user(){
-		$data = json_decode(file_get_contents('php://input'), true);
-
-        if (!isset($data['email'])) {
-            $response = ['message' => 'failed', 'error' => 'email is required'];
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));
-            return;
-        }
-
-		$email = $data['email'];
-        $deleted = $this->User_model->delete($email);
+    public function delete_user($id){
+		$deleted = $this->User_model->delete($id);
 
         if ($deleted) {
             $response['message'] = 'success';

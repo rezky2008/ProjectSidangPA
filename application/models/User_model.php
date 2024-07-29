@@ -30,16 +30,16 @@ class User_model extends CI_Model {
     }
 
     // Function to update a record
-    public function update($email, $data)
+    public function update($id, $data)
     {
-        $this->db->where('email', $email);
+        $this->db->where('id_user', $id);
         return $this->db->update('user', $data);
     }
 
     // Function to delete a record
-    public function delete($email)
+    public function delete($id)
     {
-        $this->db->where('email', $email);
+        $this->db->where('id_user', $id);
         return $this->db->delete('user');
     }
 
