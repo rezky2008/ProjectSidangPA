@@ -10,6 +10,7 @@ class Sidang_Controller extends CI_Controller {
         $this->load->model('Mahasiswa_model');
         $this->load->model('Ruangan_model');
         $this->load->model('Sidang_model');
+        $this->load->library('email');
     }
 
 
