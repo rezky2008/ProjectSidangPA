@@ -21,7 +21,11 @@ class Email_Controller extends CI_Controller {
             $this->email->from('rezky20ti@mahasiswa.pcr.ac.id', 'PenjadwalanPA');
             $this->email->to('lunarknight20@gmail.com');
             $this->email->subject('Email Test');
-            $message = "Testing the email class.\r\nThis is the second line.\r\nThis is the third line.";
+            $message = "
+            <p>Testing the email class.</p>
+            <p>This is the second line.</p>
+            <p>This is the third line.</p>
+            ";
             $this->email->message($message);
     
             if ($this->email->send()) {
