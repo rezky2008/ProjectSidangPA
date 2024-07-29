@@ -8,7 +8,7 @@ class Email_Controller extends CI_Controller {
         $config = array(
             'protocol' => 'smtp',
             'smtp_host' => 'penjadwalanpa.pocari.id', // Typically, mail.yourdomain.com
-            'smtp_port' => 587, // Standard port for TLS
+            'smtp_port' => 465, // Standard port for TLS
             'smtp_user' => 'no-reply@penjadwalanpa.pocari.id', // Your Plesk email address
             'smtp_pass' => 'penjadwalanpaemail', // Your Plesk email password
             'mailtype'  => 'html', 
