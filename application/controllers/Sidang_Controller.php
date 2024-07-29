@@ -125,6 +125,20 @@ class Sidang_Controller extends CI_Controller {
         $waktu_display = $data['waktu_display'];
         $waktu_index = $data['waktu_index'];
 
+        $koordinat_waktu = array_map('intval', explode(" ", $waktu_index));
+        $hari = $koordinat_waktu[0];
+        $jam = $koordinat_waktu[1];
+
+        $ruangan_with_id = $this->Ruangan_model->get_by_id($ruang);
+        $ruang_jadwal = json_decode($ruangan_with_id->jadwal, true);
+        if ($tipe_sidang == "proposal"){
+            $ruang_jadwal[$hari][$jam] = 0;
+        }else{
+            $ruang_jadwal[$hari][$jam] = 0;
+            $ruang_jadwal[$hari][$jam+1] = 0;
+        }
+        $ruang_jadwal_updated = json_encode($ruang_jadwal);
+
         $insert_data = array(
             'mahasiswa' => $mahasiswa,
             'pembimbing' => $pembimbing,
@@ -141,6 +155,13 @@ class Sidang_Controller extends CI_Controller {
 
         if ($inserted) {
             $response['message'] = 'success';
+
+            $update_jadwal = array(
+                'id_ruangan' => $ruang,
+                'jadwal' => $ruang_jadwal_updated,
+            )
+
+            $this->Ruangan_model->update($ruang, $update_jadwal);
         } else {
             $response['message'] = 'failed';
         }
@@ -190,6 +211,32 @@ class Sidang_Controller extends CI_Controller {
     }
 
     public function delete_sidang($id){
+        $data_sidang = $this->Sidang_model->get_by_id($id);
+
+        $ruang_sidang = $data_sidang['ruang'];
+        $tipe_sidang = $data_sidang['tipe_sidang'];
+        $waktu_sidang = $data_sidang['waktu_index'];
+
+        $koordinat_waktu = array_map('intval', explode(" ", $waktu_sidang));
+        $hari = $koordinat_waktu[0];
+        $jam = $koordinat_waktu[1];
+
+        $ruangan_with_id = $this->Ruangan_model->get_by_id($ruang_sidang);
+        $ruang_jadwal = json_decode($ruangan_with_id->jadwal, true);
+        if ($tipe_sidang == "proposal"){
+            $ruang_jadwal[$hari][$jam] = 1;
+        }else{
+            $ruang_jadwal[$hari][$jam] = 1;
+            $ruang_jadwal[$hari][$jam+1] = 1;
+        }
+        $ruang_jadwal_updated = json_encode($ruang_jadwal);
+        $update_jadwal = array(
+            'id_ruangan' => $ruang,
+            'jadwal' => $ruang_jadwal_updated,
+        )
+
+        $this->Ruangan_model->update($ruang, $update_jadwal);
+
         $deleted = $this->Sidang_model->delete($id);
 
         if ($deleted) {
