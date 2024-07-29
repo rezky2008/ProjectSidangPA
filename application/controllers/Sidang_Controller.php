@@ -235,7 +235,7 @@ class Sidang_Controller extends CI_Controller {
             'jadwal' => $ruang_jadwal_updated,
         );
 
-        $this->Ruangan_model->update($ruang, $update_jadwal);
+        $this->Ruangan_model->update($ruang_sidang, $update_jadwal);
 
         $deleted = $this->Sidang_model->delete($id);
 
