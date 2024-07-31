@@ -68,7 +68,8 @@ class Dosen_Controller extends CI_Controller {
     public function update_dosen(){
         $data = json_decode(file_get_contents('php://input'), true);
 
-        $id_dosen = $data['id_dosen'];
+        $id_lama = $data['id_lama'];
+        $id_baru = $data['id_baru'];
         $nama = $data['nama'];
         $inisial = $data['inisial'];
         $kbk = $data['kbk'];
@@ -84,7 +85,7 @@ class Dosen_Controller extends CI_Controller {
             'jadwal' => $jadwal,
         );
 
-        $updated = $this->Dosen_model->update($id_dosen, $update_data); // Updated to use $id_dosen
+        $updated = $this->Dosen_model->update($id_lama, $update_data); // Updated to use $id_dosen
 
         if ($updated) {
             $response['message'] = 'success';

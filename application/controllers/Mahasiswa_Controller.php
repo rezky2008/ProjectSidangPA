@@ -68,21 +68,22 @@ class Mahasiswa_Controller extends CI_Controller {
     public function update_mahasiswa(){
         $data = json_decode(file_get_contents('php://input'), true);
 
-        $NIM = $data['NIM'];
+        $nim_lama = $data['nim_lama'];
+        $nim_baru = $data['nim_baru'];
         $nama = $data['nama'];
         $prodi = $data['prodi'];
         $email = $data['email'];
         $id_kelas = $data['id_kelas'];
 
         $update_data = array(
-            'NIM' => $NIM,
+            'NIM' => $nim_baru,
             'nama' => $nama,
             'prodi' => $prodi,
             'email' => $email,
             'id_kelas' => $id_kelas,
         );
 
-        $updated = $this->Mahasiswa_model->update($NIM, $update_data); // Updated to use $NIM
+        $updated = $this->Mahasiswa_model->update($nim_lama, $update_data); // Updated to use $NIM
 
         if ($updated) {
             $response['message'] = 'success';
