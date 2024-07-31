@@ -77,7 +77,7 @@ class Dosen_Controller extends CI_Controller {
         $jadwal = $data['jadwal'];
 
         $update_data = array(
-            'id_dosen' => $id_dosen,
+            'id_dosen' => $id_baru,
             'nama' => $nama,
             'inisial' => $inisial,
             'kbk' => $kbk,
