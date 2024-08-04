@@ -279,6 +279,33 @@ class Sidang_Controller extends CI_Controller {
         $email_pnj2 = $data_pnj2->email;
     
         $daftar_email = [$email_mhs, $email_pbb, $email_pnj1, $email_pnj2];
+        $waktu_displays = explode(", ",$waktu_sidang);
+    
+        // Extract the day of the week from $waktu_sidang
+        preg_match('/^(\w+),/', $waktu_sidang, $matches);
+        $hari = $matches[1];
+    
+        // Create an array to map Indonesian days to English days
+        $hari_mapping = [
+            'Senin' => 'Monday',
+            'Selasa' => 'Tuesday',
+            'Rabu' => 'Wednesday',
+            'Kamis' => 'Thursday',
+            'Jumat' => 'Friday',
+            'Sabtu' => 'Saturday',
+            'Minggu' => 'Sunday'
+        ];
+    
+        // Get the current date
+        $current_date = date('Y-m-d');
+    
+        // Calculate the date for the next occurrence of the given day
+        $next_date = date('Y-m-d', strtotime("next " . $hari_mapping[$hari], strtotime($current_date)));
+    
+        // If the calculated next date is less than 7 days away, calculate the date for the week after
+        if (strtotime($next_date) - strtotime($current_date) < 7 * 86400) {
+            $next_date = date('Y-m-d', strtotime("next " . $hari_mapping[$hari], strtotime($next_date)));
+        }
     
         $config = array(
             'protocol' => 'smtp',
@@ -301,8 +328,9 @@ class Sidang_Controller extends CI_Controller {
         $message = "
         <p>Assalamu'alaikum Wr.Wb</p>
         <p>Dengan email ini kami mengundang hadirin untuk menghadiri Sidang $tipe_sidang mahasiswa $nama_mahasiswa yang akan dilaksanakan pada:</p>
+        <p>Tanggal: $waktu_displays[0], $next_date</p>
+        <p>Waktu : $waktu_displays[1]</p>
         <p>Tempat : R $ruang_sidang</p>
-        <p>Waktu : $waktu_sidang</p>
         <p>Kami harap hadirin dapat menghadiri acara sidang ini</p>
         <br>
         <p>Terima kasih,</p>
@@ -317,5 +345,6 @@ class Sidang_Controller extends CI_Controller {
             show_error($this->email->print_debugger());
         }
     }
+    
     
 }
