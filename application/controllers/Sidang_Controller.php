@@ -306,6 +306,11 @@ class Sidang_Controller extends CI_Controller {
         if (strtotime($next_date) - strtotime($current_date) < 7 * 86400) {
             $next_date = date('Y-m-d', strtotime("next " . $hari_mapping[$hari], strtotime($next_date)));
         }
+
+        // Set locale to Indonesian for date formatting
+        setlocale(LC_TIME, 'id_ID.UTF-8');
+        $tanggal_format = strftime('%d %B %Y', strtotime($next_date));
+
     
         $config = array(
             'protocol' => 'smtp',
@@ -328,7 +333,7 @@ class Sidang_Controller extends CI_Controller {
         $message = "
         <p>Assalamu'alaikum Wr.Wb</p>
         <p>Dengan email ini kami mengundang hadirin untuk menghadiri Sidang $tipe_sidang mahasiswa $nama_mahasiswa yang akan dilaksanakan pada:</p>
-        <p>Tanggal: $waktu_displays[0], $next_date</p>
+        <p>Tanggal: $waktu_displays[0], $tanggal_format</p>
         <p>Waktu : $waktu_displays[1]</p>
         <p>Tempat : R $ruang_sidang</p>
         <p>Kami harap hadirin dapat menghadiri acara sidang ini</p>
