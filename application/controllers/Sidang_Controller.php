@@ -188,7 +188,7 @@ class Sidang_Controller extends CI_Controller {
         $waktu_display = $data['waktu_display'];
         $waktu_index = $data['waktu_index'];
 
-        $insert_data = array(
+        $update_data = array(
             'id_sidang' => $id_sidang,
             'nama_mahasiswa' => $nama_mahasiswa,
             'nim_mahasiswa' => $nim_mahasiswa,
