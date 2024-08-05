@@ -118,7 +118,7 @@ class User_Controller extends CI_Controller {
             'nama' => $nama
         );
 
-        $updated = $this->User_model->update($id, $update_data); // Updated to use $email
+        $updated = $this->User_model->update($id_user, $update_data); // Updated to use $email
 
         if ($updated) {
             $response['message'] = 'success';

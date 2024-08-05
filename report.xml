@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metrics generated="2024-08-05T06:53:16" pdepend="@package_version@" ahh="2" andc="0" calls="39" ccn="13" ccn2="13" cloc="2" clsa="0" clsc="1" eloc="114" fanout="0" leafs="0" lloc="64" loc="149" maxDIT="2" ncloc="147" noc="1" nof="0" noi="0" nom="8" nop="1" roots="1">
+  <files>
+    <file name="D:\Perkuliahan\ProjectSidangPA\application\controllers\User_Controller.php" loc="149" cloc="2" eloc="114" lloc="64" ncloc="147"/>
+  </files>
+  <package name="+global" noc="1" noi="0" nom="8" nof="0" cr="0.15" rcr="0.15">
+    <class name="User_Controller" fqname="+global\User_Controller" start="4" end="148" loc="145" cloc="2" eloc="109" lloc="55" ncloc="143" dit="2" noam="8" nocc="0" noom="0" nom="8" cr="0.15" rcr="0.2775" ca="0" cbo="0" ce="0" impl="0" cis="8" csz="8" npm="8" vars="0" varsi="0" varsnp="0" wmc="13" wmci="13" wmcnp="13">
+      <file name="D:\Perkuliahan\ProjectSidangPA\application\controllers\User_Controller.php"/>
+      <method name="__construct" start="6" end="10" ccn="1" ccn2="1" loc="5" cloc="0" eloc="4" lloc="2" ncloc="5" npath="1" hnt="10" hnd="8" hv="30" hd="5.8333333333333" hl="0.17142857142857" he="175" ht="9.7222222222222" hb="0.010428874576127" hi="5.1428571428571" mi="76.38935962878"/>
+      <method name="login" start="12" end="36" ccn="2" ccn2="2" loc="25" cloc="0" eloc="19" lloc="11" ncloc="25" npath="2" hnt="83" hnd="33" hv="418.68471190675" hd="9.5652173913043" hl="0.10454545454545" he="4004.8102878037" ht="222.48946043354" hb="0.084062062979594" hi="43.771583517524" mi="53.477821117008"/>
+      <method name="logout" start="38" end="45" ccn="1" ccn2="1" loc="8" cloc="0" eloc="7" lloc="3" ncloc="8" npath="1" hnt="19" hnd="13" hv="70.308354644681" hd="4.7142857142857" hl="0.21212121212121" he="331.45367189635" ht="18.414092883131" hb="0.01596469533382" hi="14.913893409478" mi="68.497791980072"/>
+      <method name="get_user_all" start="47" end="54" ccn="1" ccn2="1" loc="8" cloc="0" eloc="7" lloc="3" ncloc="8" npath="1" hnt="23" hnd="14" hv="87.569163207325" hd="4.875" hl="0.20512820512821" he="426.89967063571" ht="23.71664836865" hb="0.018898585150292" hi="17.962905273297" mi="67.830190182927"/>
+      <method name="get_user_by_id" start="56" end="65" ccn="1" ccn2="1" loc="10" cloc="0" eloc="8" lloc="4" ncloc="10" npath="1" hnt="34" hnd="21" hv="149.33879237448" hd="4.5" hl="0.22222222222222" he="672.02456568515" ht="37.334698093619" hb="0.025574207105032" hi="33.18639830544" mi="64.941939198343"/>
+      <method name="add_user" start="67" end="102" ccn="3" ccn2="3" loc="36" cloc="1" eloc="29" lloc="15" ncloc="35" npath="4" hnt="115" hnd="38" hv="603.51166404601" hd="16.64" hl="0.060096153846154" he="10042.434089726" ht="557.91300498476" hb="0.15515701125597" hi="36.268729810457" mi="48.225396282023"/>
+      <method name="update_user" start="104" end="132" ccn="2" ccn2="2" loc="29" cloc="1" eloc="24" lloc="12" ncloc="28" npath="2" hnt="98" hnd="36" hv="506.65265014135" hd="10" hl="0.1" he="5066.5265014135" ht="281.47369452297" hb="0.098329906088249" hi="50.665265014135" mi="50.684698545772"/>
+      <method name="delete_user" start="134" end="146" ccn="2" ccn2="2" loc="13" cloc="0" eloc="11" lloc="5" ncloc="13" npath="2" hnt="33" hnd="18" hv="137.6075250476" hd="7.6" hl="0.13157894736842" he="1045.8171903617" ht="58.100955020096" hb="0.034343872463943" hi="18.106253295736" mi="62.039290876636"/>
+    </class>
+  </package>
+</metrics>

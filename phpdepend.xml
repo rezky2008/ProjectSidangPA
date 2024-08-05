@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<pdepend>
+    <metric>cyclomatic_complexity</metric>
+    <metric>maintainability_index</metric>
+</pdepend>
