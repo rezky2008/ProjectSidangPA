@@ -80,6 +80,7 @@ $route['api/get_user_all'] = 'User_Controller/get_user_all';
 $route['api/add_user'] = 'User_Controller/add_user';
 $route['api/update_user'] = 'User_Controller/update_user';
 $route['api/delete_user/(:any)'] = 'User_Controller/delete_user/$1';
+$route['api/lupa_password/(:any)'] = 'User_Controller/lupa_password/$1';
 
 $route['api/find_recom'] = 'Sidang_Controller/find_recom';
 $route['api/get_sidang_all'] = 'Sidang_Controller/get_sidang_all';

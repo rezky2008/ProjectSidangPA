@@ -23,6 +23,12 @@ class User_model extends CI_Model {
         return $query->row();
     }
 
+    public function get_by_email($email)
+    {
+        $query = $this->db->get_where('user', array('email' => $email));
+        return $query->row();
+    }
+
     // Function to insert a new record
     public function insert($data)
     {

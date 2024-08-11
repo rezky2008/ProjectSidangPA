@@ -7,6 +7,7 @@ class User_Controller extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('User_model');
+        $this->load->library('email');
     }
 
 	public function login(){
@@ -143,6 +144,44 @@ class User_Controller extends CI_Controller {
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
+    }
+
+    public function lupa_password($email){
+        $email = urldecode($email);
+        $user = $this->User_model->get_by_email($email);
+        $nama = $user->nama;
+        $password = $user->password;
+
+        $config = array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.gmail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'rezky20ti@mahasiswa.pcr.ac.id',
+            'smtp_pass' => 'zpazeabxzhffwsth',
+            'mailtype' => 'html',
+            'charset' => 'iso-8859-1',
+            'wordwrap' => TRUE,
+            'newline' => "\r\n"
+        );
+    
+        $this->email->initialize($config);
+    
+        $this->email->from('rezky20ti@mahasiswa.pcr.ac.id', 'Sistem Penjadwalan PA');
+        $this->email->to($email); // Specify multiple recipients here
+        $this->email->subject("[no-reply] Lupa Password | $nama");
+    
+        $message = "
+        <p>Berikut merupakan password anda:</p>
+        <p>$password</p>
+        ";
+    
+        $this->email->message($message);
+    
+        if ($this->email->send()) {
+            echo 'Email sent.';
+        } else {
+            show_error($this->email->print_debugger());
+        }
     }
 	
 }
