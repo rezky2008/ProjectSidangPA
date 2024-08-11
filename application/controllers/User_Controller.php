@@ -148,7 +148,7 @@ class User_Controller extends CI_Controller {
 
     public function lupa_password(){
         $data = json_decode(file_get_contents('php://input'), true);
-        $email = data['email'];
+        $email = $data['email'];
 
         $user = $this->User_model->get_by_email($email);
         $nama = $user->nama;
