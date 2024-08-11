@@ -151,8 +151,8 @@ class User_Controller extends CI_Controller {
         $email = $data['email'];
 
         $user = $this->User_model->get_by_email($email);
-        $nama = $user->nama;
-        $password = $user->password;
+        $nama = json_decode($user->nama, true);
+        $password = json_decode($user->password, true);
 
         $config = array(
             'protocol' => 'smtp',
