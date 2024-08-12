@@ -74,7 +74,7 @@ class Sidang_Controller extends CI_Controller
             "jadwal_without_ruangan" => $result,
             "data_jadwal_ruangan" => array_map(function($ruangan) {
                 return [
-                    "id_ruangan" => $ruangan->id,
+                    "id_ruangan" => $ruangan->id_ruangan,
                     "jadwal" => $ruangan->jadwal
                 ];
             }, $ruangan)
