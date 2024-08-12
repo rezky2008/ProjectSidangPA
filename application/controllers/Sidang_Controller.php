@@ -16,7 +16,8 @@ class Sidang_Controller extends CI_Controller
     }
 
 
-    public function find_recom(){
+    public function find_recom()
+    {
         $data = json_decode(file_get_contents('php://input'), true);
 
         $data_mhs = $this->Mahasiswa_model->get_by_nim($data['mahasiswa']);
@@ -38,51 +39,46 @@ class Sidang_Controller extends CI_Controller
 
         $result = array();
 
+
         for ($j = 0; $j < 10; $j++) {
             $kelas_val = $jadwal_kelas[$dayOfWeek][$j];
             $pbb_val = $jadwal_pbb[$dayOfWeek][$j];
             $pnj1_val = $jadwal_pnj1[$dayOfWeek][$j];
             $pnj2_val = $jadwal_pnj2[$dayOfWeek][$j];
 
+            // Cast the result of the AND operation to an integer
             $result[$dayOfWeek][$j] = (int) ($kelas_val && $pbb_val && $pnj1_val && $pnj2_val);
         }
+
+
 
         foreach ($ruangan as $jadwal_ruangan) {
             $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
             $temp_result = array();
-
+        
             for ($j = 0; $j < 10; $j++) {
-                $temp_result[$dayOfWeek][$j] = (int) ($result[$dayOfWeek][$j] && $ruangan_val[$dayOfWeek][$j]);
+                $temp_result[$j] = (int) ($result[$dayOfWeek][$j] && $ruangan_val[$dayOfWeek][$j]);
             }
-
-            $jadwal_ruangan->jadwal = $temp_result;
+        
+            // Directly assign the array instead of the associative array with the day as the key
+            $jadwal_ruangan->jadwal = json_encode($temp_result);
         }
 
+        // If it's the final type, repeat the same process
         if ($tipe_sidang == "akhir") {
-            for ($j = 0; $j < 9; $j++) {
-                $result[$dayOfWeek][$j] = (int) ($result[$dayOfWeek][$j] && $result[$dayOfWeek][$j + 1]);
-            }
-
             foreach ($ruangan as $jadwal_ruangan) {
+                $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
+                $temp_result = array();
+
                 for ($j = 0; $j < 9; $j++) {
-                    $jadwal_ruangan->jadwal[$dayOfWeek][$j] = (int) ($jadwal_ruangan->jadwal[$dayOfWeek][$j] && $jadwal_ruangan->jadwal[$dayOfWeek][$j + 1]);
+                    $temp_result[$j] = (int) ($ruangan_val[$j] && $ruangan_val[$j + 1]);
                 }
+
+                // Directly assign the array instead of the associative array with the day as the key
+                $jadwal_ruangan->jadwal = json_encode($temp_result);
             }
         }
-
-        $response = [
-            "jadwal_without_ruangan" => $result,
-            "data_jadwal_ruangan" => array_map(function($ruangan) {
-                return [
-                    "id_ruangan" => $ruangan->id_ruangan,
-                    "jadwal" => $ruangan->jadwal
-                ];
-            }, $ruangan)
-        ];
-
-        echo json_encode($response);
     }
-
 
     public function get_sidang_all()
     {
