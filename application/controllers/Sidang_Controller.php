@@ -84,10 +84,11 @@ class Sidang_Controller extends CI_Controller
 
 
                 $jadwal_ruangan->jadwal = json_encode($temp_result);
+                $jadwal_ruangan->jadwal = json_decode($jadwal_ruangan->jadwal[$dayOfWeek]);
             }
         }
 
-        $jadwal_ruangan->jadwal = json_decode($jadwal_ruangan->jadwal[$dayOfWeek]);
+        
 
         // Convert the result array to a JSON string
         $response['jadwal_without_ruangan'] = json_encode($result);
