@@ -37,7 +37,7 @@ class Sidang_Controller extends CI_Controller
         $date = DateTime::createFromFormat('d/m/Y', $tanggal);
         $dayOfWeek = $date->format('N') - 1;
 
-        $result = array();
+        $result = array_fill(0, 5, array_fill(0, 10, 0));
 
 
         for ($j = 0; $j < 10; $j++) {
