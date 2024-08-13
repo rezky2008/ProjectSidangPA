@@ -244,21 +244,21 @@ class Sidang_Controller extends CI_Controller
 
         if($changed){
             $ruangan_with_id = $this->Ruangan_model->get_by_id($ruang_before);
-            $ruang_jadwal = json_decode($ruangan_with_id->jadwal, true);
+            $ruang_jadwal = $ruangan_with_id->jadwal;
             if ($tipe_sidang == "proposal") {
                 $ruang_jadwal[$dayOfWeek2][$jam2] = 1;
             } else {
                 $ruang_jadwal[$dayOfWeek2][$jam2] = 1;
                 $ruang_jadwal[$dayOfWeek2][$jam2 + 1] = 1;
             }
-            $ruang_jadwal_updated = json_encode($ruang_jadwal);
+            $ruang_jadwal_updated2 = json_encode($ruang_jadwal);
 
-            $update_jadwal = array(
-                'id_ruangan' => $ruang,
-                'jadwal' => $ruang_jadwal_updated,
+            $update_jadwal2 = array(
+                'id_ruangan' => $ruang_before,
+                'jadwal' => $ruang_jadwal_updated2,
             );
 
-            $this->Ruangan_model->update($ruang_before, $update_jadwal);
+            $this->Ruangan_model->update($ruang_before, $update_jadwal2);
 
 
             $ruangan_with_id = $this->Ruangan_model->get_by_id($ruang);
