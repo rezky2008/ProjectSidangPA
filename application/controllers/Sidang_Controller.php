@@ -217,7 +217,11 @@ class Sidang_Controller extends CI_Controller
         );
 
         $before_change = $this->Sidang_model->get_by_id($id_sidang);
-        $tanggal_before = json_decode($before_change->tanggal, true);
+        $tanggal_before = $before_change->tanggal;
+
+        $date = DateTime::createFromFormat('d/m/Y', $tanggal);
+        $dayOfWeek = $date->format('N') - 1;
+
         $date2 = DateTime::createFromFormat('d/m/Y', $tanggal_before);
         $dayOfWeek2 = $date2->format('N') - 1;
 
