@@ -216,17 +216,17 @@ class Sidang_Controller extends CI_Controller
             // Add other necessary fields here
         );
 
-        $before_change = json_decode($this->Sidang_model->get_by_id($id_sidang), true);
-        $tanggal_before = $before_change['tanggal'];
+        $before_change = $this->Sidang_model->get_by_id($id_sidang);
+        $tanggal_before = $before_change->tanggal;
         $date2 = DateTime::createFromFormat('d/m/Y', $tanggal_before);
         $dayOfWeek2 = $date2->format('N') - 1;
 
-        $waktu_before = $before_change['waktu_display'];
-        $waktu_index_before = $before_change['waktu_index'];
+        $waktu_before = $before_change->waktu_display;
+        $waktu_index_before = $before_change->waktu_index;
         $koordinat_waktu2 = array_map('intval', explode(" ", $waktu_index_before));
         $jam2 = $koordinat_waktu2[1];
 
-        $ruang_before = $before_change['ruang'];
+        $ruang_before = $before_change->ruang;
 
         $changed = false;
         
