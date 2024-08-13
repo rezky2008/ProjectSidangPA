@@ -54,7 +54,7 @@ class Sidang_Controller extends CI_Controller
 
         foreach ($ruangan as $jadwal_ruangan) {
             $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
-            $temp_result = array();
+            $temp_result = array_fill(0, 5, array_fill(0, 10, 0));
 
 
             for ($j = 0; $j < 10; $j++) {
@@ -66,7 +66,7 @@ class Sidang_Controller extends CI_Controller
         }
 
         if ($tipe_sidang == "akhir") {
-            $temp_result = array();
+            $temp_result = array_fill(0, 5, array_fill(0, 10, 0));
             for ($j = 0; $j < 9; $j++) {
                 $temp_result[$j] = (int) ($result[$dayOfWeek][$j] && $result[$dayOfWeek][$j + 1]);
             }
@@ -75,7 +75,7 @@ class Sidang_Controller extends CI_Controller
 
             foreach ($ruangan as $jadwal_ruangan) {
                 $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
-                $temp_result = array();
+                $temp_result = array_fill(0, 5, array_fill(0, 10, 0));
 
 
                 for ($j = 0; $j < 9; $j++) {
