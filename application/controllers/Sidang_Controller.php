@@ -55,29 +55,47 @@ class Sidang_Controller extends CI_Controller
         foreach ($ruangan as $jadwal_ruangan) {
             $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
             $temp_result = array();
-        
+
+
             for ($j = 0; $j < 10; $j++) {
-                $temp_result[$j] = (int) ($result[$dayOfWeek][$j] && $ruangan_val[$dayOfWeek][$j]);
+                $temp_result[$dayOfWeek][$j] = (int) ($result[$dayOfWeek][$j] && $ruangan_val[$dayOfWeek][$j]);
             }
-        
-            // Directly assign the array instead of the associative array with the day as the key
+
+
             $jadwal_ruangan->jadwal = json_encode($temp_result);
         }
 
-        // If it's the final type, repeat the same process
         if ($tipe_sidang == "akhir") {
+            $temp_result = array();
+            for ($j = 0; $j < 9; $j++) {
+                $temp_result[$j] = (int) ($result[$dayOfWeek][$j] && $result[$dayOfWeek][$j + 1]);
+            }
+            $result[$dayOfWeek] = $temp_result;
+
+
             foreach ($ruangan as $jadwal_ruangan) {
                 $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
                 $temp_result = array();
 
+
                 for ($j = 0; $j < 9; $j++) {
-                    $temp_result[$j] = (int) ($ruangan_val[$j] && $ruangan_val[$j + 1]);
+                    $temp_result[$dayOfWeek][$j] = (int) ($ruangan_val[$dayOfWeek][$j] && $ruangan_val[$dayOfWeek][$j + 1]);
                 }
 
-                // Directly assign the array instead of the associative array with the day as the key
+
                 $jadwal_ruangan->jadwal = json_encode($temp_result);
             }
         }
+
+        $jadwal_ruangan->jadwal = $jadwal_ruangan->jadwal[$dayOfWeek];
+
+        // Convert the result array to a JSON string
+        $response['jadwal_without_ruangan'] = json_encode($result);
+        $response['data_jadwal_ruangan'] = $ruangan;
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
     }
 
     public function get_sidang_all()
