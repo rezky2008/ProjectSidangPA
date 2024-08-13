@@ -280,7 +280,7 @@ class Sidang_Controller extends CI_Controller
                 'jadwal' => $ruang_jadwal_updated,
             );
 
-            $this->Ruangan_model->update($ruang_before, $update_jadwal);
+            $this->Ruangan_model->update($ruang, $update_jadwal);
         }
 
         $updated = $this->Sidang_model->update($id_sidang, $update_data); // Updated to use $id_sidang
