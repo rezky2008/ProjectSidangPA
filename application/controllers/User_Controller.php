@@ -80,12 +80,14 @@ class User_Controller extends CI_Controller {
         $password = $data['password'];
         $role = $data['role'];
         $nama = $data['nama'];
+        $kelas = $data['kelas'];
 
         $insert_data = array(
             'email' => $email,
             'password' => $password,
             'role' => $role,
-            'nama' => $nama
+            'nama' => $nama,
+            'kelas' => $kelas,
             // Add other necessary fields here
         );
         
@@ -110,13 +112,15 @@ class User_Controller extends CI_Controller {
         $password = $data['password'];
         $role = $data['role'];
         $nama = $data['nama'];
+        $kelas = $data['kelas'];
 
         $update_data = array(
             'id_user' => $id_user,
             'email' => $email,
             'password' => $password,
             'role' => $role,
-            'nama' => $nama
+            'nama' => $nama,
+            'kelas' => $kelas,
         );
 
         $updated = $this->User_model->update($id_user, $update_data); // Updated to use $email
