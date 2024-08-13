@@ -343,6 +343,7 @@ class Sidang_Controller extends CI_Controller
         $tipe_sidang = ucfirst($data_sidang->tipe_sidang);
         $waktu_sidang = $data_sidang->waktu_display;
         $nama_mahasiswa = $data_sidang->nama_mahasiswa;
+        $tanggal = $data_sidang->tanggal;
 
         $nim_mahasiswa = $data_sidang->nim_mahasiswa;
         $nama_pembimbing = $data_sidang->pembimbing;
@@ -362,37 +363,11 @@ class Sidang_Controller extends CI_Controller
         $daftar_email = [$email_mhs, $email_pbb, $email_pnj1, $email_pnj2];
         $waktu_displays = explode(", ", $waktu_sidang);
 
-        // Extract the day of the week from $waktu_sidang
-        preg_match('/^(\w+),/', $waktu_sidang, $matches);
-        $hari = $matches[1];
-
-        // Create an array to map Indonesian days to English days
-        $hari_mapping = [
-            'Senin' => 'Monday',
-            'Selasa' => 'Tuesday',
-            'Rabu' => 'Wednesday',
-            'Kamis' => 'Thursday',
-            'Jumat' => 'Friday',
-            'Sabtu' => 'Saturday',
-            'Minggu' => 'Sunday'
-        ];
-
-        // Get the current date
-        $current_date = date('Y-m-d');
-
-        // Calculate the date for the next occurrence of the given day
-        $next_date = date('Y-m-d', strtotime("next " . $hari_mapping[$hari], strtotime($current_date)));
-
-        // If the calculated next date is less than 7 days away, calculate the date for the week after
-        if (strtotime($next_date) - strtotime($current_date) < 7 * 86400) {
-            $next_date = date('Y-m-d', strtotime("next " . $hari_mapping[$hari], strtotime($next_date)));
-        }
-
-        // Set locale to Indonesian for date formatting
+        $tanggal_obj = DateTime::createFromFormat('d/m/Y', $tanggal);
         setlocale(LC_TIME, 'id_ID.UTF-8');
-        $tanggal_format = strftime('%d %B %Y', strtotime($next_date));
+        $tanggal_format = strftime('%d %B %Y', $tanggal_obj->getTimestamp());
 
-
+        
         $config = array(
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.gmail.com',
