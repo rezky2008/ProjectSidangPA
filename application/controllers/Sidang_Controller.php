@@ -390,7 +390,8 @@ class Sidang_Controller extends CI_Controller
         <p>Tanggal: $waktu_displays[0], $tanggal_format</p>
         <p>Waktu : $waktu_displays[1]</p>
         <p>Tempat : R $ruang_sidang</p>
-        <p>Kami harap hadirin dapat menghadiri acara sidang ini</p>
+        <p>Kami harap hadirin dapat konfirmasi ketersediaan ke email berikut:</p>
+        <p>sidang@pcr.ac.id</p>
         <br>
         <p>Terima kasih,</p>
         <p>Sistem Penjadwalan PA</p>
