@@ -123,6 +123,17 @@ class Sidang_Controller extends CI_Controller
 
         $nama_mahasiswa = $data['nama_mahasiswa'];
         $nim_mahasiswa = $data['nim_mahasiswa'];
+
+        $mahasiswa = $this->Mahasiswa_model->get_by_nim($nim_mahasiswa);
+
+        if (isset($mahasiswa)) {
+            $response = ['message' => 'failed', 'error' => 'Data sidang dengan mahasiswa ini sudah ada!'];
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));
+            return;
+        }
+
         $pembimbing = $data['pembimbing'];
         $penguji1 = $data['penguji1'];
         $penguji2 = $data['penguji2'];
