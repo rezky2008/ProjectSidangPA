@@ -120,7 +120,7 @@ class Sidang_Controller extends CI_Controller
     public function get_sidang_by_nim($id)
     {
         $id = urldecode($id);
-        $response['data_sidang'] = $this->Sidang_model->get_nim_id($id);
+        $response['data_sidang'] = $this->Sidang_model->get_by_nim($id);
         $response['message'] = 'success';
 
         $this->output
