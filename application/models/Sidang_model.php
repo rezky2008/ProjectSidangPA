@@ -25,7 +25,9 @@ class sidang_model extends CI_Model {
 
     public function get_by_nim($nim)
     {
-        $query = $this->db->get_where('sidang', array('nim_mahasiswa' => $nim));
+        $this->db->where('nim_mahasiswa', $nim);
+        $this->db->where('status', 'terjadwal');
+        $query = $this->db->get('sidang');
         return $query->row();
     }
 
