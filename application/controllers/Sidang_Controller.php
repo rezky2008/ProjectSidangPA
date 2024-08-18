@@ -333,9 +333,14 @@ class Sidang_Controller extends CI_Controller
             'jadwal' => $ruang_jadwal_updated,
         );
 
+        $update_sidang = array(
+            'id_sidang' => $id,
+            'status' => 'selesai'
+        );
+
         $this->Ruangan_model->update($ruang_sidang, $update_jadwal);
 
-        $deleted = $this->Sidang_model->delete($id);
+        $deleted = $this->Sidang_model->update($id, $update_sidang);
 
         if ($deleted) {
             $response['message'] = 'success';
