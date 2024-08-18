@@ -117,6 +117,17 @@ class Sidang_Controller extends CI_Controller
             ->set_output(json_encode($response));
     }
 
+    public function get_sidang_by_nim($id)
+    {
+        $id = urldecode($id);
+        $response['data_sidang'] = $this->Sidang_model->get_nim_id($id);
+        $response['message'] = 'success';
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+    }
+
     public function add_sidang()
     {
         $data = json_decode(file_get_contents('php://input'), true);

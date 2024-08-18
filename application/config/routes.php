@@ -85,6 +85,7 @@ $route['api/lupa_password'] = 'User_Controller/lupa_password';
 $route['api/find_recom'] = 'Sidang_Controller/find_recom';
 $route['api/get_sidang_all'] = 'Sidang_Controller/get_sidang_all';
 $route['api/get_sidang_by_id/(:any)'] = 'Sidang_Controller/get_sidang_by_id/$1';
+$route['api/get_sidang_by_nim/(:any)'] = 'Sidang_Controller/get_sidang_by_nim/$1';
 $route['api/add_sidang'] = 'Sidang_Controller/add_sidang';
 $route['api/update_sidang'] = 'Sidang_Controller/update_sidang';
 $route['api/delete_sidang/(:any)'] = 'Sidang_Controller/delete_sidang/$1';
