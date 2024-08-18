@@ -23,6 +23,12 @@ class sidang_model extends CI_Model {
         return $query->row();
     }
 
+    public function get_by_nim($nim)
+    {
+        $query = $this->db->get_where('sidang', array('nim_mahasiswa' => $nim));
+        return $query->row();
+    }
+
     // Function to insert a new record
     public function insert($data)
     {

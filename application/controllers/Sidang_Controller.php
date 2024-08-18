@@ -125,8 +125,10 @@ class Sidang_Controller extends CI_Controller
         $nim_mahasiswa = $data['nim_mahasiswa'];
 
         $mahasiswa = $this->Mahasiswa_model->get_by_nim($nim_mahasiswa);
+        $sidang = $this->Sidang_model->get_by_nim($nim_mahasiswa);
+        $status = $sidang->status;
 
-        if (isset($mahasiswa)) {
+        if (isset($mahasiswa) && status == "terjadwal") {
             $response = ['message' => 'failed', 'error' => 'Data sidang dengan mahasiswa ini sudah ada!'];
             $this->output
                 ->set_content_type('application/json')
