@@ -393,12 +393,14 @@ class Sidang_Controller extends CI_Controller
         $sidangakhir = $this->Sidang_model->get_by_nim_akhir_selesai($nim);
         
         if (isset($mahasiswa) && (isset($sidang) || isset($sidangakhir))) {
-            $response = ['message' => 'failed', 'error' => 'Data sidang dengan mahasiswa ini sudah ada!'];
-            $this->output
+            $response = ['message' => 'failed', 'error' => 'Data sidang dengan mahasiswa ini sudah ada!'];   
+        }else{
+            $response = ['message' => 'success', 'error' => 'Aman'];
+        }
+        $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($response));
             return;
-        }
     
         // If no sidang data is found, you can add further processing here...
     }
