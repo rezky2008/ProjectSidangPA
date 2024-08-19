@@ -404,6 +404,53 @@ class Sidang_Controller extends CI_Controller
     
         // If no sidang data is found, you can add further processing here...
     }
+
+    public function ubah_status_sidang(){
+        $data = json_decode(file_get_contents('php://input'), true);
+        $id_sidang = $data['sidang_id'];
+        $status = $data['status'];
+
+        if ($status == 'selesai'){
+            $data_sidang = $this->Sidang_model->get_by_id($id_sidang);
+
+            $ruang_sidang = $data_sidang->ruang;
+            $tipe_sidang = $data_sidang->tipe_sidang;
+            $waktu_sidang = $data_sidang->waktu_index;
+
+            $koordinat_waktu = array_map('intval', explode(" ", $waktu_sidang));
+            $hari = $koordinat_waktu[0];
+            $jam = $koordinat_waktu[1];
+
+            $ruangan_with_id = $this->Ruangan_model->get_by_id($ruang_sidang);
+            $ruang_jadwal = json_decode($ruangan_with_id->jadwal, true);
+            if ($tipe_sidang == "proposal") {
+                $ruang_jadwal[$hari][$jam] = 1;
+            } else {
+                $ruang_jadwal[$hari][$jam] = 1;
+                $ruang_jadwal[$hari][$jam + 1] = 1;
+            }
+            $ruang_jadwal_updated = json_encode($ruang_jadwal);
+            $update_jadwal = array(
+                'id_ruangan' => $ruang_sidang,
+                'jadwal' => $ruang_jadwal_updated,
+            );
+
+            $this->Ruangan_model->update($ruang_sidang, $update_jadwal);
+        }
+        
+        $update_data = array(
+            'id_sidang' => $id_sidang,
+            'status' => $status,
+        );
+
+        $updated = $this->Sidang_model->update($id_sidang, $update_data); // Updated to use $id_sidang
+
+        if ($updated) {
+            $response['message'] = 'success';
+        } else {
+            $response['message'] = 'failed';
+        }
+    }
     
     
 
