@@ -19,7 +19,7 @@ class Sidang_Controller extends CI_Controller
     public function find_recom()
     {
         $data = json_decode(file_get_contents('php://input'), true);
-
+    
         $data_mhs = $this->Mahasiswa_model->get_by_nim($data['mahasiswa']);
         $dosen_pbb = $this->Dosen_model->get_by_name($data['dosen_pbb']);
         $dosen_pnj1 = $this->Dosen_model->get_by_name($data['dosen_pnj1']);
@@ -33,87 +33,101 @@ class Sidang_Controller extends CI_Controller
         $jadwal_pbb = json_decode($dosen_pbb->jadwal, true);
         $jadwal_pnj1 = json_decode($dosen_pnj1->jadwal, true);
         $jadwal_pnj2 = json_decode($dosen_pnj2->jadwal, true);
-
+    
         $date = DateTime::createFromFormat('d/m/Y', $tanggal);
         $dayOfWeek = $date->format('N') - 1;
-
+    
         $result = array_fill(0, 5, array_fill(0, 10, 0));
-
-
+    
         for ($j = 0; $j < 10; $j++) {
             $kelas_val = $jadwal_kelas[$dayOfWeek][$j];
             $pbb_val = $jadwal_pbb[$dayOfWeek][$j];
             $pnj1_val = $jadwal_pnj1[$dayOfWeek][$j];
             $pnj2_val = $jadwal_pnj2[$dayOfWeek][$j];
-
-            // Cast the result of the AND operation to an integer
-            $result[$dayOfWeek][$j] = (int) ($kelas_val && $pbb_val && $pnj1_val && $pnj2_val);
+    
+            $result[$dayOfWeek][$j] = (int)($kelas_val && $pbb_val && $pnj1_val && $pnj2_val);
         }
-
-
-
+    
         foreach ($ruangan as $jadwal_ruangan) {
             $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
             $temp_result = array_fill(0, 5, array_fill(0, 10, 0));
-
-
+    
             for ($j = 0; $j < 10; $j++) {
-                $temp_result[$dayOfWeek][$j] = (int) ($result[$dayOfWeek][$j] && $ruangan_val[$dayOfWeek][$j]);
+                $temp_result[$dayOfWeek][$j] = (int)($result[$dayOfWeek][$j] && $ruangan_val[$dayOfWeek][$j]);
             }
-
-
+    
             $jadwal_ruangan->jadwal = json_encode($temp_result);
         }
-
+    
         if ($tipe_sidang == "akhir") {
             $temp_result = array_fill(0, 5, array_fill(0, 10, 0));
             for ($j = 0; $j < 9; $j++) {
-                $temp_result[$j] = (int) ($result[$dayOfWeek][$j] && $result[$dayOfWeek][$j + 1]);
+                $temp_result[$j] = (int)($result[$dayOfWeek][$j] && $result[$dayOfWeek][$j + 1]);
             }
             $result[$dayOfWeek] = $temp_result;
-
-
+    
             foreach ($ruangan as $jadwal_ruangan) {
                 $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
                 $temp_result = array_fill(0, 5, array_fill(0, 10, 0));
-
-
+    
                 for ($j = 0; $j < 9; $j++) {
-                    $temp_result[$dayOfWeek][$j] = (int) ($ruangan_val[$dayOfWeek][$j] && $ruangan_val[$dayOfWeek][$j + 1]);
+                    $temp_result[$dayOfWeek][$j] = (int)($ruangan_val[$dayOfWeek][$j] && $ruangan_val[$dayOfWeek][$j + 1]);
                 }
-
-
+    
                 $jadwal_ruangan->jadwal = json_encode($temp_result);
             }
         }
-
-        $availabilityCount = [];
-        foreach ($result[$dayOfWeek] as $index => $timeSlot) {
-            $availabilityCount[$index] = array_sum($result[$dayOfWeek][$index]);
-        }
-
-        // Sort the time slots based on availability (from most to least available)
-        array_multisort($availabilityCount, SORT_DESC, $result[$dayOfWeek]);
-
+    
+        $ruangan_with_counts = array();
+    
         foreach ($ruangan as $jadwal_ruangan) {
             $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
-            
-            // Sort the time slots in each ruangan's schedule using the same availability order
-            $ruangan_slots = $ruangan_val[$dayOfWeek];
-            array_multisort($availabilityCount, SORT_DESC, $ruangan_slots);
-            
-            $ruangan_val[$dayOfWeek] = $ruangan_slots;
-            $jadwal_ruangan->jadwal = json_encode($ruangan_val);
+            $temp_result = array();
+            $count_ones = 0;
+    
+            if ($tipe_sidang == "akhir") {
+                for ($i = 0; $i < 5; $i++) {
+                    for ($j = 0; $j < 9; $j++) {
+                        $temp_result[$i][$j] = (int)($result[$i][$j] && $ruangan_val[$i][$j]);
+                        if ($temp_result[$i][$j] == 1) {
+                            $count_ones++;
+                        }
+                    }
+                }
+            } else {
+                for ($i = 0; $i < 5; $i++) {
+                    for ($j = 0; $j < 10; $j++) {
+                        $temp_result[$i][$j] = (int)($result[$i][$j] && $ruangan_val[$i][$j]);
+                        if ($temp_result[$i][$j] == 1) {
+                            $count_ones++;
+                        }
+                    }
+                }
+            }
+    
+            $jadwal_ruangan->jadwal = json_encode($temp_result);
+            $ruangan_with_counts[] = array('ruangan' => $jadwal_ruangan, 'count' => $count_ones);
         }
-
+    
+        // Sort the rooms based on the count of ones in descending order
+        usort($ruangan_with_counts, function ($a, $b) {
+            return $b['count'] - $a['count'];
+        });
+    
+        // Removed the limit to just 10 rooms, so return all sorted rooms
+        $top_ruangan = array_map(function ($item) {
+            return $item['ruangan'];
+        }, $ruangan_with_counts);
+    
         // Convert the result array to a JSON string
         $response['jadwal_without_ruangan'] = json_encode($result);
-        $response['data_jadwal_ruangan'] = $ruangan;
-
+        $response['data_jadwal_ruangan'] = $top_ruangan;
+    
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
     }
+    
 
     public function get_sidang_all()
     {
