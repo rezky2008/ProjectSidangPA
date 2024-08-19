@@ -90,4 +90,6 @@ $route['api/add_sidang'] = 'Sidang_Controller/add_sidang';
 $route['api/update_sidang'] = 'Sidang_Controller/update_sidang';
 $route['api/delete_sidang/(:any)'] = 'Sidang_Controller/delete_sidang/$1';
 
+$route['api/cek_sidang/(:any)'] = 'Sidang_Controller/cek_sidang/$1';
+
 $route['send-email/(:any)'] = 'Sidang_Controller/send_mail/$1';

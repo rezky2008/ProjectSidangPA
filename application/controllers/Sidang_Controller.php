@@ -164,21 +164,8 @@ class Sidang_Controller extends CI_Controller
     public function add_sidang()
     {
         $data = json_decode(file_get_contents('php://input'), true);
-
         $nama_mahasiswa = $data['nama_mahasiswa'];
         $nim_mahasiswa = $data['nim_mahasiswa'];
-
-        $mahasiswa = $this->Mahasiswa_model->get_by_nim($nim_mahasiswa);
-        $sidang = $this->Sidang_model->get_by_nim($nim_mahasiswa);
-        
-        if (isset($mahasiswa) && isset($sidang)) {
-            $response = ['message' => 'failed', 'error' => 'Data sidang dengan mahasiswa ini sudah ada!'];
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));
-            return;
-        }
-
         $pembimbing = $data['pembimbing'];
         $penguji1 = $data['penguji1'];
         $penguji2 = $data['penguji2'];
@@ -269,6 +256,7 @@ class Sidang_Controller extends CI_Controller
             'tanggal' => $tanggal,
             'waktu_display' => $waktu_display,
             'waktu_index' => $waktu_index,
+            'status' => "terjadwal",
             // Add other necessary fields here
         );
 
@@ -397,6 +385,25 @@ class Sidang_Controller extends CI_Controller
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
     }
+
+    public function cek_sidang($nim){
+
+        $mahasiswa = $this->Mahasiswa_model->get_by_nim($nim);
+        $sidang = $this->Sidang_model->get_by_nim_terjadwal($nim);
+        $sidangakhir = $this->Sidang_model->get_by_nim_akhir_selesai($nim);
+        
+        if (isset($mahasiswa) && (isset($sidang) || isset($sidangakhir))) {
+            $response = ['message' => 'failed', 'error' => 'Data sidang dengan mahasiswa ini sudah ada!'];
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));
+            return;
+        }
+    
+        // If no sidang data is found, you can add further processing here...
+    }
+    
+    
 
     public function send_mail($id)
     {
