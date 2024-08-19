@@ -87,6 +87,25 @@ class Sidang_Controller extends CI_Controller
             }
         }
 
+        $availabilityCount = [];
+        foreach ($result[$dayOfWeek] as $index => $timeSlot) {
+            $availabilityCount[$index] = array_sum($result[$dayOfWeek][$index]);
+        }
+
+        // Sort the time slots based on availability (from most to least available)
+        array_multisort($availabilityCount, SORT_DESC, $result[$dayOfWeek]);
+
+        foreach ($ruangan as $jadwal_ruangan) {
+            $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
+            
+            // Sort the time slots in each ruangan's schedule using the same availability order
+            $ruangan_slots = $ruangan_val[$dayOfWeek];
+            array_multisort($availabilityCount, SORT_DESC, $ruangan_slots);
+            
+            $ruangan_val[$dayOfWeek] = $ruangan_slots;
+            $jadwal_ruangan->jadwal = json_encode($ruangan_val);
+        }
+
         // Convert the result array to a JSON string
         $response['jadwal_without_ruangan'] = json_encode($result);
         $response['data_jadwal_ruangan'] = $ruangan;
