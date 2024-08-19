@@ -19,75 +19,114 @@ class Sidang_Controller extends CI_Controller
     public function find_recom()
     {
         $data = json_decode(file_get_contents('php://input'), true);
-        
-        $dosen_models = [
-            'pbb' => $this->Dosen_model->get_by_name($data['dosen_pbb']),
-            'pnj1' => $this->Dosen_model->get_by_name($data['dosen_pnj1']),
-            'pnj2' => $this->Dosen_model->get_by_name($data['dosen_pnj2'])
-        ];
     
-        $kelas_mhs = $this->Kelas_model->get_by_id($this->Mahasiswa_model->get_by_nim($data['mahasiswa'])->id_kelas);
-        $jadwals = [
-            'kelas' => json_decode($kelas_mhs->jadwal, true),
-            'pbb' => json_decode($dosen_models['pbb']->jadwal, true),
-            'pnj1' => json_decode($dosen_models['pnj1']->jadwal, true),
-            'pnj2' => json_decode($dosen_models['pnj2']->jadwal, true),
-        ];
+        $data_mhs = $this->Mahasiswa_model->get_by_nim($data['mahasiswa']);
+        $dosen_pbb = $this->Dosen_model->get_by_name($data['dosen_pbb']);
+        $dosen_pnj1 = $this->Dosen_model->get_by_name($data['dosen_pnj1']);
+        $dosen_pnj2 = $this->Dosen_model->get_by_name($data['dosen_pnj2']);
+        $tipe_sidang = $data['tipe_sidang'];
+        $tanggal = $data['tanggal'];
+        $ruangan = $this->Ruangan_model->get_all();
+        $sidang = $this->Sidang_model->get_all();
+        $kelas_mhs = $this->Kelas_model->get_by_id($data_mhs->id_kelas);
+        $jadwal_kelas = json_decode($kelas_mhs->jadwal, true);
+        $jadwal_pbb = json_decode($dosen_pbb->jadwal, true);
+        $jadwal_pnj1 = json_decode($dosen_pnj1->jadwal, true);
+        $jadwal_pnj2 = json_decode($dosen_pnj2->jadwal, true);
     
-        $date = DateTime::createFromFormat('d/m/Y', $data['tanggal']);
+        $date = DateTime::createFromFormat('d/m/Y', $tanggal);
         $dayOfWeek = $date->format('N') - 1;
     
         $result = array_fill(0, 5, array_fill(0, 10, 0));
+    
         for ($j = 0; $j < 10; $j++) {
-            $result[$dayOfWeek][$j] = (int)($jadwals['kelas'][$dayOfWeek][$j] && $jadwals['pbb'][$dayOfWeek][$j] && $jadwals['pnj1'][$dayOfWeek][$j] && $jadwals['pnj2'][$dayOfWeek][$j]);
+            $kelas_val = $jadwal_kelas[$dayOfWeek][$j];
+            $pbb_val = $jadwal_pbb[$dayOfWeek][$j];
+            $pnj1_val = $jadwal_pnj1[$dayOfWeek][$j];
+            $pnj2_val = $jadwal_pnj2[$dayOfWeek][$j];
+    
+            $result[$dayOfWeek][$j] = (int)($kelas_val && $pbb_val && $pnj1_val && $pnj2_val);
         }
     
-        foreach ($this->Ruangan_model->get_all() as $ruangan) {
-            $ruangan_jadwal = json_decode($ruangan->jadwal, true);
-            $temp_result = array_map(function($r, $ruang) use ($dayOfWeek) {
-                return array_map(fn($j, $ruang_j) => (int)($j && $ruang_j), $r, $ruang[$dayOfWeek]);
-            }, $result, $ruangan_jadwal);
+        foreach ($ruangan as $jadwal_ruangan) {
+            $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
+            $temp_result = array_fill(0, 5, array_fill(0, 10, 0));
     
-            $ruangan->jadwal = json_encode($temp_result);
+            for ($j = 0; $j < 10; $j++) {
+                $temp_result[$dayOfWeek][$j] = (int)($result[$dayOfWeek][$j] && $ruangan_val[$dayOfWeek][$j]);
+            }
     
-            if ($data['tipe_sidang'] == 'akhir') {
-                $temp_result = array_fill(0, 9, 0);
+            $jadwal_ruangan->jadwal = json_encode($temp_result);
+        }
+    
+        if ($tipe_sidang == "akhir") {
+            $temp_result = array_fill(0, 5, array_fill(0, 10, 0));
+            for ($j = 0; $j < 9; $j++) {
+                $temp_result[$j] = (int)($result[$dayOfWeek][$j] && $result[$dayOfWeek][$j + 1]);
+            }
+            $result[$dayOfWeek] = $temp_result;
+    
+            foreach ($ruangan as $jadwal_ruangan) {
+                $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
+                $temp_result = array_fill(0, 5, array_fill(0, 10, 0));
+    
                 for ($j = 0; $j < 9; $j++) {
-                    $temp_result[$j] = (int)($result[$dayOfWeek][$j] && $result[$dayOfWeek][$j + 1]);
+                    $temp_result[$dayOfWeek][$j] = (int)($ruangan_val[$dayOfWeek][$j] && $ruangan_val[$dayOfWeek][$j + 1]);
                 }
-                $result[$dayOfWeek] = $temp_result;
+    
+                $jadwal_ruangan->jadwal = json_encode($temp_result);
             }
         }
     
-        $ruangan_with_counts = array_map(function($ruangan) use ($result, $data) {
-            $ruangan_jadwal = json_decode($ruangan->jadwal, true);
+        $ruangan_with_counts = array();
+    
+        foreach ($ruangan as $jadwal_ruangan) {
+            $ruangan_val = json_decode($jadwal_ruangan->jadwal, true);
+            $temp_result = array();
             $count_ones = 0;
     
-            for ($i = 0; $i < 5; $i++) {
-                $limit = $data['tipe_sidang'] == 'akhir' ? 9 : 10;
-                for ($j = 0; $j < $limit; $j++) {
-                    $temp = (int)($result[$i][$j] && $ruangan_jadwal[$i][$j]);
-                    $ruangan_jadwal[$i][$j] = $temp;
-                    $count_ones += $temp;
+            if ($tipe_sidang == "akhir") {
+                for ($i = 0; $i < 5; $i++) {
+                    for ($j = 0; $j < 9; $j++) {
+                        $temp_result[$i][$j] = (int)($result[$i][$j] && $ruangan_val[$i][$j]);
+                        if ($temp_result[$i][$j] == 1) {
+                            $count_ones++;
+                        }
+                    }
+                }
+            } else {
+                for ($i = 0; $i < 5; $i++) {
+                    for ($j = 0; $j < 10; $j++) {
+                        $temp_result[$i][$j] = (int)($result[$i][$j] && $ruangan_val[$i][$j]);
+                        if ($temp_result[$i][$j] == 1) {
+                            $count_ones++;
+                        }
+                    }
                 }
             }
     
-            $ruangan->jadwal = json_encode($ruangan_jadwal);
-            return ['ruangan' => $ruangan, 'count' => $count_ones];
-        }, $this->Ruangan_model->get_all());
+            $jadwal_ruangan->jadwal = json_encode($temp_result);
+            $ruangan_with_counts[] = array('ruangan' => $jadwal_ruangan, 'count' => $count_ones);
+        }
     
-        usort($ruangan_with_counts, fn($a, $b) => $b['count'] - $a['count']);
-        
-        $response = [
-            'jadwal_without_ruangan' => json_encode($result),
-            'data_jadwal_ruangan' => array_column($ruangan_with_counts, 'ruangan')
-        ];
+        // Sort the rooms based on the count of ones in descending order
+        usort($ruangan_with_counts, function ($a, $b) {
+            return $b['count'] - $a['count'];
+        });
+    
+        // Removed the limit to just 10 rooms, so return all sorted rooms
+        $top_ruangan = array_map(function ($item) {
+            return $item['ruangan'];
+        }, $ruangan_with_counts);
+    
+        // Convert the result array to a JSON string
+        $response['jadwal_without_ruangan'] = json_encode($result);
+        $response['data_jadwal_ruangan'] = $top_ruangan;
     
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
     }
-    
     
 
     public function get_sidang_all()
